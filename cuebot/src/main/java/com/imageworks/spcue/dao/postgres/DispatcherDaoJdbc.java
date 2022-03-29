@@ -129,6 +129,8 @@ public class DispatcherDaoJdbc extends JdbcDaoSupport implements DispatcherDao {
     private final ConcurrentHashMap<String, ShowCache> bookableShows =
         new ConcurrentHashMap<String, ShowCache>();
 
+    public boolean testMode = false;
+
     /**
      * Whether or not to enable FIFO scheduling in the same priority.
      */
@@ -428,6 +430,19 @@ public class DispatcherDaoJdbc extends JdbcDaoSupport implements DispatcherDao {
                     host.os, host.getHostId(), host.getFacilityId(), host.os));
 
         return result;
+    }
+
+    @Override
+    public boolean isTestMode() {
+        return testMode;
+    }
+
+    @Override
+    public void setTestMode(boolean enabled) {
+        testMode = enabled;
+        if (enabled) {
+            bookableShows.clear();
+        }
     }
 }
 
