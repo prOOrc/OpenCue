@@ -178,12 +178,12 @@ def getVmInfo():
             "Metadata-Flavor": "Google"
         }
     )
-    if response.ok():
-        data = response.json()
+    if response.ok:
         try:
+            data = response.json()
             vm_id = data["id"]
             job_id = data["attributes"]["opencue-job-id"]
-        except KeyError:
+        except Exception:
             pass
         else:
             return {
