@@ -172,12 +172,15 @@ def getVmInfo():
     """Returns cloud virtual machine info"""
     vm_id = None
     job_id = None
-    response = requests.get(
-        "http://169.254.169.254/computeMetadata/v1/instance/?recursive=true",
-        headers={
-            "Metadata-Flavor": "Google"
-        }
-    )
+    try:
+        response = requests.get(
+            "http://169.254.169.254/computeMetadata/v1/instance/?recursive=true",
+            headers={
+                "Metadata-Flavor": "Google"
+            }
+        )
+    except requests.RequestException:
+        return None
     if response.ok:
         try:
             data = response.json()
