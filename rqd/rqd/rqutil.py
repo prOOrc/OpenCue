@@ -185,7 +185,10 @@ def getVmInfo():
         try:
             data = response.json()
             vm_id = data["id"]
-            job_id = data["attributes"]["opencue-job-id"]
+            if "attributes" in data:
+                attributes = data.get("attributes") or {}
+                if "opencue-job-id" in attributes:
+                    job_id = attributes.get("opencue-job-id")
         except Exception:
             pass
         else:
