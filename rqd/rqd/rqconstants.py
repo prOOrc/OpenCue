@@ -65,7 +65,15 @@ LAUNCH_FRAME_USER_GID = 20
 RQD_RETRY_STARTUP_CONNECT_DELAY = 30
 RQD_RETRY_CRITICAL_REPORT_DELAY = 30
 RQD_USE_IP_AS_HOSTNAME = True
+if 'RQD_USE_IP_AS_HOSTNAME' in os.environ:
+    RQD_USE_IP_AS_HOSTNAME = os.environ['RQD_USE_IP_AS_HOSTNAME'].lower() == 'true'
+else:
+    RQD_USE_IP_AS_HOSTNAME = True
 RQD_USE_IPV6_AS_HOSTNAME = False
+if 'RQD_USE_VM_NAME_AS_HOSTNAME' in os.environ:
+    RQD_USE_VM_NAME_AS_HOSTNAME = os.environ['RQD_USE_VM_NAME_AS_HOSTNAME'].lower() == 'true'
+else:
+    RQD_USE_VM_NAME_AS_HOSTNAME = False
 if 'RQD_BECOME_JOB_USER' in os.environ:
     RQD_BECOME_JOB_USER = os.environ['RQD_BECOME_JOB_USER'].lower() == 'true'
 else:

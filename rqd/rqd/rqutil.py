@@ -161,6 +161,12 @@ def getHostname():
     try:
         if rqd.rqconstants.OVERRIDE_HOSTNAME:
             return rqd.rqconstants.OVERRIDE_HOSTNAME
+        if rqd.rqconstants.RQD_USE_VM_NAME_AS_HOSTNAME:
+            vm_info = getVmInfo()
+            if vm_info:
+                vm_name = vm_info.get("VM_NAME")
+                if vm_name:
+                    return vm_name
         if rqd.rqconstants.RQD_USE_IP_AS_HOSTNAME or rqd.rqconstants.RQD_USE_IPV6_AS_HOSTNAME:
             return getHostIp()
         return socket.gethostbyaddr(socket.gethostname())[0].split('.')[0]
@@ -168,9 +174,11 @@ def getHostname():
         log.warning("Failed to resolve hostname to IP, falling back to local hostname")
         return socket.gethostname()
 
+@Memoize
 def getVmInfo():
     """Returns cloud virtual machine info"""
     vm_id = None
+    vm_name = None
     job_id = ""
     try:
         response = requests.get(
@@ -185,6 +193,7 @@ def getVmInfo():
         try:
             data = response.json()
             vm_id = data["id"]
+            vm_name = data["name"]
             if "attributes" in data:
                 attributes = data.get("attributes") or {}
                 if "opencue-job-id" in attributes:
@@ -195,6 +204,7 @@ def getVmInfo():
             return {
                 "JOB_ID": job_id,
                 "VM_ID": vm_id,
+                "VM_NAME": vm_name,
             }
 
 
