@@ -86,6 +86,7 @@ class MockConfig(object):
 @mock.patch(
     "rqd.rqutil.getHostname", new=mock.MagicMock(return_value="arbitrary-hostname")
 )
+@mock.patch('rqd.rqutil.getVmInfo', new=mock.MagicMock(return_value=None))
 class RqConstantTests(pyfakefs.fake_filesystem_unittest.TestCase):
 
     tempdir = tempfile.mkdtemp()

@@ -165,6 +165,7 @@ class MachineTests(pyfakefs.fake_filesystem_unittest.TestCase):
 
     @mock.patch('os.statvfs', new=mock.MagicMock())
     @mock.patch('platform.system', new=mock.MagicMock(return_value='Linux'))
+    @mock.patch('rqd.rqutil.getVmInfo', new=mock.MagicMock(return_value=None))
     def setUp(self):
         self.setUpPyfakefs()
         self.fs.create_file('/proc/cpuinfo', contents=CPUINFO)
@@ -454,6 +455,7 @@ class MachineTests(pyfakefs.fake_filesystem_unittest.TestCase):
 
         self.assertEqual({0, 1, 2, 3, 4, 5, 6, 7}, self.machine._Machine__tasksets)
 
+    @mock.patch('rqd.rqutil.getVmInfo', new=mock.MagicMock(return_value=None))
     def test_tags(self):
         tags = ["test1", "test2", "test3"]
         rqd.rqconstants.RQD_TAGS = " ".join(tags)
@@ -465,6 +467,7 @@ class MachineTests(pyfakefs.fake_filesystem_unittest.TestCase):
 
 class CpuinfoTests(unittest.TestCase):
 
+    @mock.patch('rqd.rqutil.getVmInfo', new=mock.MagicMock(return_value=None))
     def setUp(self):
         self.rqd = rqd.rqcore.RqCore()
 

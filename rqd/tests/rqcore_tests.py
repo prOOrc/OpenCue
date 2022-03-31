@@ -272,6 +272,7 @@ class RqCoreTests(unittest.TestCase):
         self.rqcore.updateRssThread.cancel.assert_called()
 
     @mock.patch('rqd.rqnetwork.Network', autospec=True)
+    @mock.patch('rqd.rqutil.getVmInfo', new=mock.MagicMock(return_value=None))
     @mock.patch('sys.exit')
     def test_handleExit(self, networkMock, exitMock):
         self.rqcore = rqd.rqcore.RqCore()

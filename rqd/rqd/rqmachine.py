@@ -85,7 +85,7 @@ class Machine(object):
         if platform.system() == 'Linux':
             self.__vmstat = rqd.rqswap.VmStat()
         # Cloud Virtual Machine Info
-        self.__vmInfo = self.__getVmInfo()
+        self.__vmInfo = rqd.rqutil.getVmInfo()
 
         self.state = rqd.compiled_proto.host_pb2.UP
 
@@ -430,28 +430,6 @@ class Machine(object):
             except Exception:
                 return str(0)
         return str(0)
-
-    def __getVmInfo(self):
-        vm_id = None
-        job_id = None
-        response = requests.get(
-            "169.254.169.254/computeMetadata/v1/instance/?recursive=true",
-            headers={
-                "Metadata-Flavor": "Google"
-            }
-        )
-        if response.ok():
-            data = response.json()
-            try:
-                vm_id = data["id"]
-                job_id = data["attributes"]["opencue-job-id"]
-            except KeyError:
-                pass
-            else:
-                return {
-                    "JOB_ID": job_id,
-                    "VM_ID": vm_id,
-                }
 
     @rqd.rqutil.Memoize
     def getTimezone(self):
