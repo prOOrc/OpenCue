@@ -886,6 +886,7 @@ class RqCore(object):
         runningFrame = rqd.rqnetwork.RunningFrame(self, runFrame)
         runningFrame.frameAttendantThread = FrameAttendantThread(self, runFrame, runningFrame)
         runningFrame.frameAttendantThread.start()
+        self.nimbyOn()
 
     def getRunningFrame(self, frameId):
         """Gets the currently running frame."""
