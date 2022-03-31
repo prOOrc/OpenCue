@@ -10,3 +10,8 @@ venv*/
 coverage.xml
 htmlcov/
 /.env
+cuebot/bin/
+.vscode/
+env.sh
+cuebot/src/main/java/logs
+cuebot/src/main/java/velocity.log

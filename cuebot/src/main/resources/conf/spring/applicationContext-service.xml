@@ -54,6 +54,18 @@
     </constructor-arg>
   </bean>
 
+  <bean id="rFarmClient" class="com.imageworks.spcue.rfarm.RFarmClientGrpc" destroy-method="shutdown">
+    <constructor-arg index="0" type="java.lang.String">
+      <value>${grpc.rfarm_server_host}</value>
+    </constructor-arg>
+    <constructor-arg index="1" type="int">
+      <value>${grpc.rfarm_server_port}</value>
+    </constructor-arg>
+    <constructor-arg index="2" type="int">
+      <value>${grpc.rfarm_task_deadline}</value>
+    </constructor-arg>
+  </bean>
+
   <bean id="launchQueue" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
     <property name="corePoolSize" value="1" />
     <property name="maxPoolSize" value="1" />
@@ -244,6 +256,7 @@
     <property name="manageQueue" ref="manageQueue" />
     <property name="dispatchSupport" ref="dispatchSupport" />
     <property name="rqdClient" ref="rqdClient" />
+    <property name="rFarmClient" ref="rFarmClient" />
     <property name="departmentManager" ref="departmentManager"/>
     <property name="redirectManager" ref="redirectManager" />
     <property name="emailSupport" ref="emailSupport"/>
@@ -330,6 +343,7 @@
     <property name="jobManager" ref="jobManager" />
     <property name="hostManager" ref="hostManager" />
     <property name="rqdClient" ref="rqdClient" />
+    <property name="rFarmClient" ref="rFarmClient" />
   </bean>
 
   <bean id="localDispatcher" class="com.imageworks.spcue.dispatcher.LocalDispatcher">

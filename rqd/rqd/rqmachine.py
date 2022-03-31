@@ -55,6 +55,7 @@ elif platform.system() == "Windows":
 # pylint: enable=import-error,wrong-import-position
 
 import psutil
+import requests
 
 import rqd.compiled_proto.host_pb2
 import rqd.compiled_proto.report_pb2
@@ -83,6 +84,8 @@ class Machine(object):
 
         if platform.system() == 'Linux':
             self.__vmstat = rqd.rqswap.VmStat()
+        # Cloud Virtual Machine Info
+        self.__vmInfo = self.__getVmInfo()
 
         self.state = rqd.compiled_proto.host_pb2.UP
 
@@ -428,6 +431,28 @@ class Machine(object):
                 return str(0)
         return str(0)
 
+    def __getVmInfo(self):
+        vm_id = None
+        job_id = None
+        response = requests.get(
+            "169.254.169.254/computeMetadata/v1/instance/?recursive=true",
+            headers={
+                "Metadata-Flavor": "Google"
+            }
+        )
+        if response.ok():
+            data = response.json()
+            try:
+                vm_id = data["id"]
+                job_id = data["attributes"]["opencue-job-id"]
+            except KeyError:
+                pass
+            else:
+                return {
+                    "JOB_ID": job_id,
+                    "VM_ID": vm_id,
+                }
+
     @rqd.rqutil.Memoize
     def getTimezone(self):
         """Returns the desired timezone"""
@@ -482,6 +507,8 @@ class Machine(object):
         elif os.uname()[-1] == "x86_64":
             self.__renderHost.tags.append("64bit")
         self.__renderHost.tags.append(os.uname()[2].replace(".EL.spi", "").replace("smp", ""))
+        if self.__vmInfo:
+            self.__renderHost.tags.append(self.__vmInfo["JOB_ID"].replace("-", ""))
 
     def testInitMachineStats(self, pathCpuInfo):
         """Initializes machine stats outside of normal startup process. Used for testing."""
@@ -494,6 +521,8 @@ class Machine(object):
         self.__renderHost.boot_time = self.getBootTime()
         self.__renderHost.facility = rqd.rqconstants.DEFAULT_FACILITY
         self.__renderHost.attributes['SP_OS'] = rqd.rqconstants.SP_OS
+        if self.__vmInfo:
+            self.__renderHost.attributes['VM_ID'] = self.__vmInfo["VM_ID"]
 
         self.updateMachineStats()
 

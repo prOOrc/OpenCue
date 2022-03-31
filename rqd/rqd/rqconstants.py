@@ -66,9 +66,15 @@ RQD_RETRY_STARTUP_CONNECT_DELAY = 30
 RQD_RETRY_CRITICAL_REPORT_DELAY = 30
 RQD_USE_IP_AS_HOSTNAME = True
 RQD_USE_IPV6_AS_HOSTNAME = False
-RQD_BECOME_JOB_USER = True
+if 'RQD_BECOME_JOB_USER' in os.environ:
+    RQD_BECOME_JOB_USER = os.environ['RQD_BECOME_JOB_USER'].lower() == 'true'
+else:
+    RQD_BECOME_JOB_USER = True
 RQD_CREATE_USER_IF_NOT_EXISTS = True
-RQD_TAGS = ''
+if 'RQD_TAGS' in os.environ:
+    RQD_TAGS = os.environ['RQD_TAGS']
+else:
+    RQD_TAGS = ''
 
 KILL_SIGNAL = 9
 if platform.system() == 'Linux':

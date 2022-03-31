@@ -46,6 +46,7 @@ public class DispatchHost extends Entity
     public long gpuMemory;
     public long idleGpuMemory;
     public String tags;
+    public String vmId;
     public String os;
 
     public boolean isNimby;

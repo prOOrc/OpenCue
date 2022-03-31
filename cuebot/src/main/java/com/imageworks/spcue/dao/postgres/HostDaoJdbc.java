@@ -214,6 +214,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             host.isNimby = rs.getBoolean("b_nimby");
             host.threadMode = rs.getInt("int_thread_mode");
             host.tags = rs.getString("str_tags");
+            host.vmId = rs.getString("str_vm_id");
             host.os = rs.getString("str_os");
             host.hardwareState =
                 HardwareState.valueOf(rs.getString("str_state"));
@@ -238,6 +239,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             "host.b_nimby, "+
             "host.int_thread_mode, "+
             "host.str_tags, " +
+            "host.str_vm_id, " +
             "host_stat.str_os, " +
             "host_stat.str_state, " +
             "alloc.pk_facility " +
@@ -289,9 +291,10 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             "int_gpu_mem,"+
             "int_gpu_mem_idle,"+
             "str_fqdn, " +
+            "str_vm_id, " +
             "int_thread_mode "+
         ") " +
-        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 
         "INSERT INTO " +
         "host_stat " +
@@ -349,7 +352,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             fqdn = host.getName();
             name = getHostNameFromFQDN(name, useLongNames);
         }
-
+        String vmId = host.getAttributesOrDefault("VM_ID", null);
         String hid = SqlUtil.genKeyRandom();
         int coreUnits = host.getNumProcs() * host.getCoresPerProc();
         String os = host.getAttributesMap().get("SP_OS");
@@ -363,7 +366,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
                 memUnits, memUnits,
                 host.getNumGpus(), host.getNumGpus(),
                 host.getTotalGpuMem(), host.getTotalGpuMem(),
-                fqdn, threadMode.getNumber());
+                fqdn, vmId, threadMode.getNumber());
 
         getJdbcTemplate().update(INSERT_HOST_DETAIL[1],
                 hid, hid, host.getTotalMem(), host.getFreeMem(),

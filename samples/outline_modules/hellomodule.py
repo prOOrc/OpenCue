@@ -15,10 +15,17 @@
 #  limitations under the License.
 
 
-from outline import Outline, cuerun
-from outline.modules.tutorial import HelloModule
+from outline import Outline, cuerun, Layer
+from outline.modules.shell import Shell
 
 ol = Outline("my_job")
-ol.add_layer(HelloModule("my_layer"))
+layer = Shell("my_layer", command=["ls", "-la"])
+layer.set_env("REZ_CONFIG_FILE", "/home/rezconfig.py")
+layer.set_env("REZ_CONFIG_FILE1", "/home/rezconfig.py1")
+layer.set_arg("tags", "daf4e7b20669414fba0e86aff260d99f")
+layer.set_arg("cores", 4.0)
+layer.set_arg("threadable", True)
+layer.set_limits(["limit1", "limit2"])
+ol.add_layer(layer)
 
-cuerun.launch(ol, range="1-10", pause=True)
+cuerun.launch(ol, range="1-1", pause=True, use_pycuerun=False)

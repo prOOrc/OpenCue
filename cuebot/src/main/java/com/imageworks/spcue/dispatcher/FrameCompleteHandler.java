@@ -38,6 +38,7 @@ import com.imageworks.spcue.LayerInterface;
 import com.imageworks.spcue.Source;
 import com.imageworks.spcue.VirtualProc;
 import com.imageworks.spcue.dispatcher.commands.DispatchBookHost;
+import com.imageworks.spcue.dispatcher.commands.DispatchFrameComplete;
 import com.imageworks.spcue.dispatcher.commands.DispatchNextFrame;
 import com.imageworks.spcue.dispatcher.commands.KeyRunnable;
 import com.imageworks.spcue.grpc.host.LockState;
@@ -311,12 +312,20 @@ public class FrameCompleteHandler {
             /*
              * Check for local dispatching.
              */
+            DispatchHost host = hostManager.getDispatchHost(proc.getHostId());
 
             if (proc.isLocalDispatch) {
 
                 if (!bookingManager.hasLocalHostAssignment(proc)) {
                     logger.info("the proc " + proc + " no longer has a local assignment.");
                     unbookProc = true;
+                }
+            } else if (host.vmId != null) {
+                if (!proc.isLocalDispatch) {
+                    logger.info("the proc " + proc
+                            + " is on virtual machive.");
+                    unbookProc = true;
+                    dispatchQueue.execute(new DispatchFrameComplete(frame, host, dispatcher));
                 }
             }
 
@@ -451,9 +460,6 @@ public class FrameCompleteHandler {
                                 logger.info("Transfering " + proc);
                                 dispatchSupport.unbookProc(proc);
 
-                                DispatchHost host =
-                                        hostManager.getDispatchHost(proc.getHostId());
-
                                 bookingQueue.execute(
                                         new DispatchBookHost(host, dispatcher));
                                 return;
@@ -478,9 +484,6 @@ public class FrameCompleteHandler {
 
                     int stranded_cores = hostManager.getStrandedCoreUnits(proc);
                     if (stranded_cores >= 100) {
-
-                        DispatchHost host =
-                                hostManager.getDispatchHost(proc.getHostId());
                         dispatchSupport.strandCores(host, stranded_cores);
                         dispatchSupport.unbookProc(proc);
                         bookingQueue.execute(new DispatchBookHost(host, job,

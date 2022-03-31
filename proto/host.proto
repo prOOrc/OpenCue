@@ -269,6 +269,7 @@ message Host {
     ThreadMode thread_mode = 27;
     float gpus = 28;
     float idle_gpus = 29;
+    string vm_id = 30;
 }
 
 message HostSearchCriteria {

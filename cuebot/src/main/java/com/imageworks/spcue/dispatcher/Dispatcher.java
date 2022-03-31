@@ -231,5 +231,15 @@ public interface Dispatcher {
      * @return
      */
     List<VirtualProc> dispatchHost(DispatchHost host, ShowInterface show);
+
+    /**
+     * Dispatch frame complete report to RFarm.
+     *
+     * @param host
+     * @param frame
+     * @param vmId
+     * @throws DispatcherException if an error occurs.
+     */
+    void dispatchFrameComplete(DispatchHost host, DispatchFrame frame);
 }
 

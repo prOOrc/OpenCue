@@ -39,10 +39,15 @@ import com.imageworks.spcue.JobInterface;
 import com.imageworks.spcue.LayerInterface;
 import com.imageworks.spcue.ShowInterface;
 import com.imageworks.spcue.VirtualProc;
+import com.imageworks.spcue.grpc.rfarm.RenderHost;
+import com.imageworks.spcue.grpc.rfarm.RunningFrameInfo;
+import com.imageworks.spcue.rfarm.RFarmClient;
+import com.imageworks.spcue.rfarm.RFarmClientException;
 import com.imageworks.spcue.rqd.RqdClient;
 import com.imageworks.spcue.rqd.RqdClientException;
 import com.imageworks.spcue.service.HostManager;
 import com.imageworks.spcue.service.JobManager;
+import com.imageworks.spcue.util.CueExceptionUtil;
 import com.imageworks.spcue.util.CueUtil;
 
 /**
@@ -92,6 +97,7 @@ public class CoreUnitDispatcher implements Dispatcher {
     private JobManager jobManager;
 
     private RqdClient rqdClient;
+    private RFarmClient rFarmClient;
 
     private HostManager hostManager;
 
@@ -445,6 +451,14 @@ public class CoreUnitDispatcher implements Dispatcher {
         this.rqdClient = rqdClient;
     }
 
+    public RFarmClient getRFarmClient() {
+        return rFarmClient;
+    }
+
+    public void setRFarmClient(RFarmClient rFarmClient) {
+        this.rFarmClient = rFarmClient;
+    }
+
     private abstract class DispatchFrameTemplate {
         protected VirtualProc proc;
         protected JobInterface job;
@@ -542,6 +556,24 @@ public class CoreUnitDispatcher implements Dispatcher {
             }
 
             return true;
+        }
+    }
+
+    @Override
+    public void dispatchFrameComplete(DispatchHost host, DispatchFrame frame) {
+        try {
+            RunningFrameInfo frameInfo = RunningFrameInfo.newBuilder()
+                .setFrameId(frame.getId())
+                .setLayerId(frame.getLayerId())
+                .setJobId(frame.getJobId())
+                .build();
+            RenderHost renderHost = RenderHost.newBuilder()
+                .setName(host.getName())
+                .setId(host.getId())
+                .build();
+            rFarmClient.reportFrameComplete(renderHost, frameInfo);
+        } catch (RFarmClientException t) {
+            
         }
     }
 }
