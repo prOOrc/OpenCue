@@ -173,7 +173,7 @@ def getVmInfo():
     vm_id = None
     job_id = None
     response = requests.get(
-        "169.254.169.254/computeMetadata/v1/instance/?recursive=true",
+        "http://169.254.169.254/computeMetadata/v1/instance/?recursive=true",
         headers={
             "Metadata-Flavor": "Google"
         }
