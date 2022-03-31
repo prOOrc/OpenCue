@@ -188,7 +188,7 @@ def getVmInfo():
             if "attributes" in data:
                 attributes = data.get("attributes") or {}
                 if "opencue-job-id" in attributes:
-                    job_id = attributes.get("opencue-job-id")
+                    job_id = attributes.get("opencue-job-id") or ""
         except Exception:
             pass
         else:
