@@ -171,7 +171,7 @@ def getHostname():
 def getVmInfo():
     """Returns cloud virtual machine info"""
     vm_id = None
-    job_id = None
+    job_id = ""
     try:
         response = requests.get(
             "http://169.254.169.254/computeMetadata/v1/instance/?recursive=true",
