@@ -755,6 +755,11 @@ class RqCore(object):
         @param reqRelease: Number of cores to release, 100 = 1 physical core"""
         self.__threadLock.acquire()
         try:
+            log.warning('Release cores requested. Number: %s', str(reqRelease))
+            log.warning('total_cores: %s', str(self.cores.total_cores))
+            log.warning('locked_cores: %s', str(self.cores.locked_cores))
+            log.warning('idle_cores: %s', str(self.cores.idle_cores))
+            log.warning('booked_cores: %s', str(self.cores.booked_cores))
             # pylint: disable=no-member
             self.cores.booked_cores -= reqRelease
             maxRelease = (self.cores.total_cores -
