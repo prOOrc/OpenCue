@@ -133,8 +133,8 @@ class Machine(object):
     def isDesktop(self):
         """Returns True if machine starts in run level 5 (X11)
            by checking /etc/inittab. False if not."""
-        if rqd.rqconstants.OVERRIDE_IS_DESKTOP:
-            return True
+        if rqd.rqconstants.OVERRIDE_IS_DESKTOP is not None:
+            return rqd.rqconstants.OVERRIDE_IS_DESKTOP
         if platform.system() == "Linux" and os.path.exists(rqd.rqconstants.PATH_INITTAB):
             inittabFile = open(rqd.rqconstants.PATH_INITTAB, "r")
             for line in inittabFile:

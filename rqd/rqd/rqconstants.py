@@ -126,7 +126,10 @@ if '-c' in sys.argv:
     CONFIG_FILE = sys.argv[sys.argv.index('-c') + 1]
 
 OVERRIDE_CORES = None # number of cores. ex: None or 8
-OVERRIDE_IS_DESKTOP = None # Force rqd to run in 'desktop' mode
+if 'OVERRIDE_IS_DESKTOP' in os.environ:
+    OVERRIDE_IS_DESKTOP = os.environ['OVERRIDE_IS_DESKTOP'].lower() == 'true'
+else:
+    OVERRIDE_IS_DESKTOP = None # Force rqd to run in 'desktop' mode
 OVERRIDE_PROCS = None # number of physical cpus. ex: None or 2
 OVERRIDE_MEMORY = None # in Kb
 OVERRIDE_NIMBY = None # True to turn on, False to turn off
