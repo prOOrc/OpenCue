@@ -80,6 +80,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             host.dateBooted = rs.getDate("ts_booted");
             host.dateCreated = rs.getDate("ts_created");
             host.datePinged = rs.getDate("ts_ping");
+            host.vmId = rs.getString("str_vm_id");
             return host;
         }
     };
@@ -118,6 +119,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             "host.int_gpu_mem_idle,"+
             "host.ts_created,"+
             "host.str_name, " +
+            "host.str_vm_id, " +
             "host_stat.str_state,"+
             "host_stat.ts_ping,"+
             "host_stat.ts_booted, "+

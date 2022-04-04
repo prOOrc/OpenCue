@@ -393,7 +393,7 @@ public class CoreUnitDispatcher implements Dispatcher {
     @Override
     public void setTestMode(boolean enabled) {
         testMode = enabled;
-        dispatchSupport.clearCache();
+        dispatchSupport.setTestMode();
     }
 
     /**
@@ -572,8 +572,8 @@ public class CoreUnitDispatcher implements Dispatcher {
                 .setId(host.getId())
                 .build();
             rFarmClient.reportFrameComplete(renderHost, frameInfo);
-        } catch (RFarmClientException t) {
-            
+        } catch (RFarmClientException e) {
+            logger.warn("Unable to send report to rfarm :" + e);
         }
     }
 }

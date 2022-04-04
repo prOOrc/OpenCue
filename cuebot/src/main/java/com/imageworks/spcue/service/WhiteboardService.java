@@ -376,6 +376,11 @@ public class WhiteboardService implements Whiteboard {
     }
 
     @Override
+    public Host getHostByVmId(String vmId) {
+        return whiteboardDao.getHostByVmId(vmId);
+    }
+
+    @Override
     public Layer getLayer(String id) {
         return whiteboardDao.getLayer(id);
     }

@@ -81,6 +81,7 @@ public final class RFarmClientGrpc implements RFarmClient {
         try {
             getStub().reportFrameComplete(request);
         } catch (StatusRuntimeException | ExecutionException e) {
+            logger.warn("failed to send report : " + e);
             throw new RFarmClientException("failed to send report", e);
         }
     }

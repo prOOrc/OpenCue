@@ -553,7 +553,7 @@ public interface DispatchSupport {
      *
      * @return
      */
-    void clearCache();
+    void setTestMode();
 
 }
 

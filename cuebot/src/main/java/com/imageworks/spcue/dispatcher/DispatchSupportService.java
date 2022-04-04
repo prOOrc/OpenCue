@@ -564,7 +564,11 @@ public class DispatchSupportService implements DispatchSupport {
     public void determineIdleCores(DispatchHost host, int load) {
         int maxLoad = host.cores + ((host.cores / 100) *
                 Dispatcher.CORE_LOAD_THRESHOLD);
-
+        // TODO Temporary workaround for Yandex.Cloud
+        // After vm starts there is some load average and frame didn't dispatch
+        if (!testMode) {
+            load = 0;
+        }
         int idleCores = maxLoad - load;
         if (idleCores < host.idleCores) {
             host.idleCores = idleCores;
@@ -676,7 +680,8 @@ public class DispatchSupportService implements DispatchSupport {
     }
 
     @Override
-    public void clearCache() {
+    public void setTestMode() {
+        testMode = true;
         dispatcherDao.clearCache();
     }
 }

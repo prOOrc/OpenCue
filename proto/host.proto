@@ -46,6 +46,9 @@ service HostInterface {
     // Return a host by its id
     rpc GetHost(HostGetHostRequest) returns (HostGetHostResponse);
 
+    // Return a host by its vm id
+    rpc GetHostByVmId(HostGetHostByVmIdRequest) returns (HostGetHostByVmIdResponse);
+
     // Search for a number of hosts
     rpc GetHosts(HostGetHostsRequest) returns (HostGetHostsResponse);
 
@@ -277,6 +280,7 @@ message HostSearchCriteria {
     repeated string regex = 2;
     repeated string substr = 3;
     repeated string ids = 4;
+    repeated string vmIds = 7;
     repeated string allocs = 5;
     HardwareStateSeq states = 6;
 }
@@ -496,7 +500,16 @@ message HostGetHostRequest {
     string id = 1;
 }
 
+// GetHostByVmId
+message HostGetHostByVmIdRequest {
+    string vm_id = 1;
+}
+
 message HostGetHostResponse {
+    Host host = 1;
+}
+
+message HostGetHostByVmIdResponse {
     Host host = 1;
 }
 

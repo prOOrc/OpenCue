@@ -542,6 +542,12 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
     }
 
     @Override
+    public Host getHostByVmId(String vmId) {
+        return getJdbcTemplate().queryForObject(
+                GET_HOST + " AND host.str_vm_id=?", HOST_MAPPER, vmId);
+    }
+
+    @Override
     public ProcSeq getProcs(HostInterface host) {
         ProcSearchInterface r = procSearchFactory.create();
         r.filterByHost(host);

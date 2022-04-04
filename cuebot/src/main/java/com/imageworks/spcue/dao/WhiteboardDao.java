@@ -149,6 +149,14 @@ public interface WhiteboardDao {
     Host getHost(String id);
 
     /**
+     * returns the host a proc is part of
+     *
+     * @param vmId String
+     * @return Host
+     */
+    Host getHostByVmId(String vmId);
+
+    /**
      * returns the host by name
      *
      * @param name String

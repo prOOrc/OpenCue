@@ -1,4 +1,27 @@
 # -----------------
+# CACHE
+# -----------------
+FROM gradle:6.0.1-jdk11 AS cache
+
+USER gradle
+
+# First line after FROM should be unique to avoid --cache-from weirdness.
+RUN echo "Cuebot cache stage"
+
+RUN mkdir -p /home/gradle/cache_home
+ENV GRADLE_USER_HOME /home/gradle/cache_home
+
+# Only copy dependency-related files
+COPY --chown=gradle:gradle ./cuebot/build.gradle /home/gradle/cuebot/
+COPY --chown=gradle:gradle ./cuebot/settings.gradle /home/gradle/cuebot/
+
+WORKDIR /home/gradle/cuebot
+
+# Only download dependencies
+# Eat the expected build failure since no source code has been copied yet
+RUN gradle clean build --no-deamon > /dev/null 2>&1 || true
+
+# -----------------
 # BUILD
 # -----------------
 FROM gradle:6.0.1-jdk11 AS build
@@ -10,6 +33,7 @@ RUN echo "Cuebot build stage"
 
 COPY --chown=gradle:gradle ./cuebot /home/gradle/cuebot/
 COPY --chown=gradle:gradle ./proto /home/gradle/proto/
+COPY --chown=gradle:gradle --from=cache /home/gradle/cache_home /home/gradle/.gradle
 
 WORKDIR /home/gradle/cuebot
 
@@ -56,6 +80,7 @@ RUN echo "Cuebot runtime stage"
 
 ARG CUEBOT_GRPC_CUE_PORT=8443
 ARG CUEBOT_GRPC_RQD_PORT=8444
+ARG CUEBOT_GRPC_DEBUG_PORT=8450
 
 WORKDIR /opt/opencue
 
@@ -75,4 +100,6 @@ ENV grpc_rqd_port ${CUEBOT_GRPC_RQD_PORT}
 
 EXPOSE $grpc_cue_port
 
-ENTRYPOINT ["java", "-jar", "/opt/opencue/cuebot-latest.jar"]
+ENTRYPOINT ["java"]
+
+CMD [ "-jar", "/opt/opencue/cuebot-latest.jar" ]

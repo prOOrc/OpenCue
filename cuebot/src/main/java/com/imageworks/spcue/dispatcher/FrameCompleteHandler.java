@@ -497,8 +497,13 @@ public class FrameCompleteHandler {
                     dispatchQueue.execute(new DispatchNextFrame(job, proc,
                             localDispatcher));
                 } else {
-                    dispatchQueue.execute(new DispatchNextFrame(job, proc,
-                            dispatcher));
+                    // TODO Temp workaround for Yandex.Cloud render farm
+                    // Don't dispatch next frame on frame complete report
+                    // because vm will be restarted
+                    if (host.vmId == null) {
+                        dispatchQueue.execute(new DispatchNextFrame(job, proc,
+                                dispatcher));
+                    }
                 }
             } else {
                 dispatchSupport.unbookProc(proc, "frame state was "
