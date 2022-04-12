@@ -38,9 +38,10 @@ import com.imageworks.spcue.LayerInterface;
 import com.imageworks.spcue.Source;
 import com.imageworks.spcue.VirtualProc;
 import com.imageworks.spcue.dispatcher.commands.DispatchBookHost;
-import com.imageworks.spcue.dispatcher.commands.DispatchFrameComplete;
 import com.imageworks.spcue.dispatcher.commands.DispatchNextFrame;
 import com.imageworks.spcue.dispatcher.commands.KeyRunnable;
+import com.imageworks.spcue.events.FrameCompletedEvent;
+import com.imageworks.spcue.events.JobFinishedEvent;
 import com.imageworks.spcue.grpc.host.LockState;
 import com.imageworks.spcue.grpc.job.FrameExitStatus;
 import com.imageworks.spcue.grpc.job.FrameState;
@@ -48,7 +49,7 @@ import com.imageworks.spcue.grpc.job.JobState;
 import com.imageworks.spcue.grpc.report.FrameCompleteReport;
 import com.imageworks.spcue.service.BookingManager;
 import com.imageworks.spcue.service.HostManager;
-import com.imageworks.spcue.service.JmsMover;
+import com.imageworks.spcue.service.EventManager;
 import com.imageworks.spcue.service.JobManager;
 import com.imageworks.spcue.service.JobManagerSupport;
 import com.imageworks.spcue.util.CueExceptionUtil;
@@ -74,7 +75,7 @@ public class FrameCompleteHandler {
     private Dispatcher localDispatcher;
     private JobManagerSupport jobManagerSupport;
     private DispatchSupport dispatchSupport;
-    private JmsMover jsmMover;
+    private EventManager eventManager;
 
     /*
      * The last time a proc was unbooked for subscription or job balancing.
@@ -310,9 +311,24 @@ public class FrameCompleteHandler {
             }
 
             /*
-             * Check for local dispatching.
-             */
+            * Check for local dispatching.
+            */
             DispatchHost host = hostManager.getDispatchHost(proc.getHostId());
+
+            /*
+             * Send frame completed event
+             */
+            eventManager.send(
+                "frame.completed",
+                new FrameCompletedEvent(
+                    frame.getId(),
+                    frame.getLayerId(),
+                    frame.getJobId(),
+                    host.getId(),
+                    host.vmId));
+            if (job.state == JobState.FINISHED) {
+                eventManager.send("job.finished", new JobFinishedEvent(job.getId()));
+            }
 
             if (proc.isLocalDispatch) {
 
@@ -325,7 +341,6 @@ public class FrameCompleteHandler {
                     logger.info("the proc " + proc
                             + " is on virtual machive.");
                     unbookProc = true;
-                    dispatchQueue.execute(new DispatchFrameComplete(frame, host, dispatcher));
                 }
             }
 
@@ -419,7 +434,7 @@ public class FrameCompleteHandler {
                 }
 
                 if (job.state.equals(JobState.FINISHED)) {
-                    jsmMover.send(job);
+                    eventManager.send("job.finished", new JobFinishedEvent(job.getId()));
                 }
                 return;
             }
@@ -684,12 +699,12 @@ public class FrameCompleteHandler {
         this.bookingManager = bookingManager;
     }
 
-    public JmsMover getJmsMover() {
-        return jsmMover;
+    public EventManager getEventManager() {
+        return eventManager;
     }
 
-    public void setJmsMover(JmsMover jsmMover) {
-        this.jsmMover = jsmMover;
+    public void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
     }
 }
 

@@ -51,7 +51,7 @@ public class JobLauncher implements ApplicationContextAware {
     private AdminManager adminManager;
     private ThreadPoolTaskExecutor launchQueue;
     private EmailSupport emailSupport;
-    private JmsMover jmsMover;
+    private EventManager eventManager;
     private LocalBookingSupport localBookingSupport;
 
     /**
@@ -133,7 +133,7 @@ public class JobLauncher implements ApplicationContextAware {
                 Set<String> depts = new HashSet<String>();
                 for (BuildableJob job: spec.getJobs()) {
                     JobDetail d = jobManager.getJobDetail(job.detail.id);
-                    jmsMover.send(d);
+                    eventManager.send("job.launched", d);
                     if (departmentManager.isManaged(d)) {
                         if (!depts.contains(d.deptId)) {
                             departmentManager.syncJobsWithTask(d);
@@ -220,12 +220,12 @@ public class JobLauncher implements ApplicationContextAware {
         this.launchQueue = launchQueue;
     }
 
-    public JmsMover getJmsMover() {
-        return jmsMover;
+    public EventManager getEventManager() {
+        return eventManager;
     }
 
-    public void setJmsMover(JmsMover jmsMover) {
-        this.jmsMover = jmsMover;
+    public void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
     }
 
     public LocalBookingSupport getLocalBookingSupport() {

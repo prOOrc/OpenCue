@@ -37,6 +37,7 @@ import org.springframework.context.annotation.PropertySource;
                  "classpath:conf/spring/applicationContext-grpcServer.xml",
                  "classpath:conf/spring/applicationContext-service.xml",
                  "classpath:conf/spring/applicationContext-jms.xml",
+                 "classpath:conf/spring/applicationContext-rabbit.xml",
                  "classpath:conf/spring/applicationContext-criteria.xml"})
 @EnableConfigurationProperties
 @PropertySource({"classpath:opencue.properties"})

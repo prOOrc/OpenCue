@@ -46,5 +46,9 @@
     <property name="topic" ref="jobTopic" />
     <property name="template" ref="jmsTemplate" />
   </bean>
+
+  <bean id="jmsEventManager" class="com.imageworks.spcue.service.JmsEventManagerService">
+      <property name="jmsMover" ref="jmsMover" />
+    </bean>
 </beans>
 

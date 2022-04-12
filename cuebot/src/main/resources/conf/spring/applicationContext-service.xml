@@ -54,18 +54,6 @@
     </constructor-arg>
   </bean>
 
-  <bean id="rFarmClient" class="com.imageworks.spcue.rfarm.RFarmClientGrpc" destroy-method="shutdown">
-    <constructor-arg index="0" type="java.lang.String">
-      <value>${grpc.rfarm_server_host}</value>
-    </constructor-arg>
-    <constructor-arg index="1" type="int">
-      <value>${grpc.rfarm_server_port}</value>
-    </constructor-arg>
-    <constructor-arg index="2" type="int">
-      <value>${grpc.rfarm_task_deadline}</value>
-    </constructor-arg>
-  </bean>
-
   <bean id="launchQueue" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
     <property name="corePoolSize" value="1" />
     <property name="maxPoolSize" value="1" />
@@ -256,7 +244,6 @@
     <property name="manageQueue" ref="manageQueue" />
     <property name="dispatchSupport" ref="dispatchSupport" />
     <property name="rqdClient" ref="rqdClient" />
-    <property name="rFarmClient" ref="rFarmClient" />
     <property name="departmentManager" ref="departmentManager"/>
     <property name="redirectManager" ref="redirectManager" />
     <property name="emailSupport" ref="emailSupport"/>
@@ -269,7 +256,7 @@
     <property name="adminManager" ref="adminManager"/>
     <property name="jobManager" ref="jobManager"/>
     <property name="emailSupport" ref="emailSupport"/>
-    <property name="jmsMover" ref="jmsMover"/>
+    <property name="eventManager" ref="rabbitEventManager"/>
     <property name="localBookingSupport" ref="localBookingSupport" />
   </bean>
 
@@ -343,7 +330,6 @@
     <property name="jobManager" ref="jobManager" />
     <property name="hostManager" ref="hostManager" />
     <property name="rqdClient" ref="rqdClient" />
-    <property name="rFarmClient" ref="rFarmClient" />
   </bean>
 
   <bean id="localDispatcher" class="com.imageworks.spcue.dispatcher.LocalDispatcher">
@@ -382,7 +368,7 @@
     <property name="dispatcher" ref="dispatcher" />
     <property name="localDispatcher" ref="localDispatcher" />
     <property name="dispatchSupport" ref="dispatchSupport" />
-    <property name="jmsMover" ref="jmsMover"/>
+    <property name="eventManager" ref="rabbitEventManager"/>
   </bean>
 
   <bean id="hostReportHandler" class="com.imageworks.spcue.dispatcher.HostReportHandler" destroy-method="shutdown">
@@ -399,6 +385,7 @@
     <property name="jobDao" ref="jobDao" />
     <property name="layerDao" ref="layerDao" />
     <property name="killQueue" ref="killQueue"/>
+    <property name="eventManager" ref="rabbitEventManager"/>
   </bean>
 
   <!-- ##################################################################################### -->

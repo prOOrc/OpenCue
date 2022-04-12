@@ -47,7 +47,6 @@ import com.imageworks.spcue.grpc.job.FrameState;
 import com.imageworks.spcue.grpc.job.JobState;
 import com.imageworks.spcue.grpc.job.FrameStateSeq;
 import com.imageworks.spcue.grpc.job.Order;
-import com.imageworks.spcue.rfarm.RFarmClient;
 import com.imageworks.spcue.rqd.RqdClient;
 import com.imageworks.spcue.util.CueExceptionUtil;
 import com.imageworks.spcue.util.FrameSet;
@@ -62,7 +61,6 @@ public class JobManagerSupport {
     private DependManager dependManager;
     private HostManager hostManager;
     private RqdClient rqdClient;
-    private RFarmClient rFarmClient;
     private DepartmentManager departmentManager;
     private DispatchSupport dispatchSupport;
     private DispatchQueue manageQueue;
@@ -144,7 +142,6 @@ public class JobManagerSupport {
              * will have inaccurate numbers.
              */
             emailSupport.sendShutdownEmail(job);
-            rFarmClient.reportJobComplete(job);
 
             return true;
         }
@@ -578,14 +575,6 @@ public class JobManagerSupport {
 
     public void setRqdClient(RqdClient rqdClient) {
         this.rqdClient = rqdClient;
-    }
-
-    public RFarmClient getRFarmClient() {
-        return rFarmClient;
-    }
-
-    public void setRFarmClient(RFarmClient rFarmClient) {
-        this.rFarmClient = rFarmClient;
     }
 
     public DepartmentManager getDepartmentManager() {

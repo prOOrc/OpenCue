@@ -428,11 +428,5 @@ public class LocalDispatcher extends AbstractDispatcher implements Dispatcher {
     public void setHostManager(HostManager hostManager) {
         this.hostManager = hostManager;
     }
-
-    @Override
-    public void dispatchFrameComplete(DispatchHost host, DispatchFrame frame) {
-        // TODO Auto-generated method stub
-        
-    }
 }
 

@@ -39,6 +39,7 @@
 		/WEB-INF/applicationContext-service.xml
         /WEB-INF/applicationContext-ice.xml
         /WEB-INF/applicationContext-jms.xml
+        /WEB-INF/applicationContext-rabbit.xml
 		</param-value>
 	</context-param>
 

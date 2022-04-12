@@ -46,6 +46,7 @@ import com.imageworks.spcue.dispatcher.commands.DispatchBookHost;
 import com.imageworks.spcue.dispatcher.commands.DispatchBookHostLocal;
 import com.imageworks.spcue.dispatcher.commands.DispatchHandleHostReport;
 import com.imageworks.spcue.dispatcher.commands.DispatchRqdKillFrame;
+import com.imageworks.spcue.events.HostReportedEvent;
 import com.imageworks.spcue.grpc.host.HardwareState;
 import com.imageworks.spcue.grpc.host.LockState;
 import com.imageworks.spcue.grpc.report.BootReport;
@@ -56,6 +57,7 @@ import com.imageworks.spcue.grpc.report.RunningFrameInfo;
 import com.imageworks.spcue.rqd.RqdClient;
 import com.imageworks.spcue.rqd.RqdClientException;
 import com.imageworks.spcue.service.BookingManager;
+import com.imageworks.spcue.service.EventManager;
 import com.imageworks.spcue.service.HostManager;
 import com.imageworks.spcue.service.JobManager;
 import com.imageworks.spcue.service.JobManagerSupport;
@@ -79,6 +81,7 @@ public class HostReportHandler {
     private JobManagerSupport jobManagerSupport;
     private JobDao jobDao;
     private LayerDao layerDao;
+    private EventManager eventManager;
 
     /**
      * Boolean to toggle if this class is accepting data or not.
@@ -201,6 +204,17 @@ public class HostReportHandler {
              * Increase/decreased reserved memory.
              */
             handleMemoryReservations(host, report);
+
+            /*
+             * Send host report
+             */
+            eventManager.send(
+                "host.reported",
+                new HostReportedEvent(
+                    host.getHostId(),
+                    host.vmId,
+                    isBoot,
+                    report.getFramesList()));
 
             /*
              * The checks are done in order of least CPU intensive to
@@ -855,6 +869,14 @@ public class HostReportHandler {
 
     public void setKillQueue(ThreadPoolExecutor killQueue) {
         this.killQueue = killQueue;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
+    }
+
+    public void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
     }
 }
 
