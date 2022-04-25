@@ -564,7 +564,7 @@ class Machine(object):
             log.warning("Manually overriding the total memory")
             self.__renderHost.total_mem = rqd.rqconstants.OVERRIDE_MEMORY
         elif self.__vmInfo is not None and self.__vmInfo["MEMORY"] is not None:
-            self.__renderHost.total_mem = self.__vmInfo["MEMORY"] / 1024
+            self.__renderHost.total_mem = self.__vmInfo["MEMORY"] // 1024
 
         if rqd.rqconstants.OVERRIDE_CORES is not None:
             log.warning("Manually overriding the number of reported cores")
