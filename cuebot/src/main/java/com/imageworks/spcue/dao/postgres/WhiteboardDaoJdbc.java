@@ -971,7 +971,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
                             .setBookedTime((int) (rs.getTimestamp("ts_booked").getTime() / 1000))
                             .setDispatchTime((int) (rs.getTimestamp("ts_dispatched").getTime() / 1000))
                             .setUnbooked(rs.getBoolean("b_unbooked"))
-                            .setLogPath(String.format("%s/%s.%s.rqlog",
+                            .setLogPath(CueUtil.buildLogPath(
                                     SqlUtil.getString(rs,"str_log_dir"), SqlUtil.getString(rs,"job_name"),
                                     SqlUtil.getString(rs,"frame_name")))
                             .setRedirectTarget(SqlUtil.getString(rs, "str_redirect"))
@@ -1236,7 +1236,10 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
                 .setTotalGpuSec(rs.getLong("int_gpu_time_fail") + rs.getLong("int_gpu_time_success"))
                 .setRenderedFrameCount( rs.getLong("int_frame_success_count"))
                 .setFailedFrameCount(rs.getLong("int_frame_fail_count"))
-                .setHighFrameSec(rs.getInt("int_clock_time_high"));
+                .setHighFrameSec(rs.getInt("int_clock_time_high"))
+                .setFailedClockSec(rs.getLong("int_clock_time_fail"))
+                .setRenderedClockSec(rs.getLong("int_clock_time_success"))
+                .setTotalClockSec(rs.getLong("int_clock_time_fail") + rs.getLong("int_clock_time_success"));
 
         if (statsBuilder.getRenderedFrameCount() > 0) {
             statsBuilder.setAvgCoreSec(
@@ -1435,6 +1438,10 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
                         builder.setTotalGpuTime(builder.getTotalGpuTime() +
                                 (int)(System.currentTimeMillis() / 1000 - builder.getStartTime()) * rs.getInt("int_gpus"));
                     }
+                    builder.setLogPath(CueUtil.buildLogPath(
+                        SqlUtil.getString(rs,"str_log_dir"),
+                        SqlUtil.getString(rs,"job_name"),
+                        SqlUtil.getString(rs,"str_name")));
                     return builder.build();
                 }
             };
@@ -1573,6 +1580,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
             "frame.int_total_past_core_time,"+
             "frame.int_total_past_gpu_time,"+
             "layer.str_name AS layer_name," +
+            "job.str_log_dir AS str_log_dir, "+
             "job.str_name AS job_name "+
         "FROM "+
              "job, " +
@@ -1923,6 +1931,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
             "job_usage.int_frame_fail_count, "+
             "job_usage.int_clock_time_high,"+
             "job_usage.int_clock_time_success,"+
+            "job_usage.int_clock_time_fail, "+
             "job_mem.int_max_rss,"+
             "(job_resource.int_cores + job_resource.int_local_cores) AS int_cores," +
             "(job_resource.int_gpus + job_resource.int_local_gpus) AS int_gpus " +
@@ -2238,6 +2247,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
             "frame.int_total_past_core_time,"+
             "frame.int_total_past_gpu_time,"+
             "layer.str_name AS layer_name," +
+            "job.str_log_dir AS str_log_dir, "+
             "job.str_name AS job_name, "+
             "ROW_NUMBER() OVER " +
                 "(ORDER BY frame.int_dispatch_order ASC, layer.int_dispatch_order ASC) AS row_number " +

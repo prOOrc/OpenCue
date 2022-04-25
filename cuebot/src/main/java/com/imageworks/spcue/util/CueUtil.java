@@ -241,6 +241,17 @@ public final class CueUtil {
     }
 
     /**
+     * returns a frame name from a layer and frame number.
+     *
+     * @param layer
+     * @param num
+     * @return String
+     */
+    public final static String buildLogPath(String logDir, String jobName, String frameName) {
+        return String.format("%s/%s.%s.rqlog", logDir, jobName, frameName);
+    }
+
+    /**
      * for logging how long an operation took
      *
      * @param time

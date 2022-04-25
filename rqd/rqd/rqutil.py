@@ -180,6 +180,9 @@ def getVmInfo():
     vm_id = None
     vm_name = None
     job_id = ""
+    cores = None
+    memory = None
+    gpus = None
     try:
         response = requests.get(
             "http://169.254.169.254/computeMetadata/v1/instance/?recursive=true",
@@ -197,7 +200,22 @@ def getVmInfo():
             if "attributes" in data:
                 attributes = data.get("attributes") or {}
                 if "opencue-job-id" in attributes:
-                    job_id = attributes.get("opencue-job-id") or ""
+                    job_id = attributes["opencue-job-id"] or ""
+                if "cores" in attributes:
+                    try:
+                        cores = int(attributes["cores"])
+                    except ValueError:
+                        pass
+                if "memory" in attributes:
+                    try:
+                        memory = int(attributes["memory"])
+                    except ValueError:
+                        pass
+                if "gpus" in attributes:
+                    try:
+                        gpus = int(attributes["gpus"])
+                    except ValueError:
+                        pass
         except Exception:
             pass
         else:
@@ -205,6 +223,9 @@ def getVmInfo():
                 "JOB_ID": job_id,
                 "VM_ID": vm_id,
                 "VM_NAME": vm_name,
+                "CORES": cores,
+                "MEMORY": memory,
+                "GPUS": gpus,
             }
 
 

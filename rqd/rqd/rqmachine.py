@@ -55,7 +55,6 @@ elif platform.system() == "Windows":
 # pylint: enable=import-error,wrong-import-position
 
 import psutil
-import requests
 
 import rqd.compiled_proto.host_pb2
 import rqd.compiled_proto.report_pb2
@@ -564,10 +563,14 @@ class Machine(object):
         if rqd.rqconstants.OVERRIDE_MEMORY is not None:
             log.warning("Manually overriding the total memory")
             self.__renderHost.total_mem = rqd.rqconstants.OVERRIDE_MEMORY
+        elif self.__vmInfo is not None and self.__vmInfo["MEMORY"] is not None:
+            self.__renderHost.total_mem = self.__vmInfo["MEMORY"] / 1024
 
         if rqd.rqconstants.OVERRIDE_CORES is not None:
             log.warning("Manually overriding the number of reported cores")
             __totalCores = rqd.rqconstants.OVERRIDE_CORES * rqd.rqconstants.CORE_VALUE
+        elif self.__vmInfo is not None and self.__vmInfo["CORES"] is not None:
+            __totalCores = self.__vmInfo["CORES"]
 
         if rqd.rqconstants.OVERRIDE_PROCS is not None:
             log.warning("Manually overriding the number of reported procs")

@@ -490,6 +490,7 @@ message Frame {
     int32 total_gpu_time = 20;
     int64 max_gpu_memory = 21;
     int64 used_gpu_memory = 22;
+    string log_path = 23;
 }
 
 // Object for frame searching
@@ -654,6 +655,9 @@ message JobStats {
     int64 failed_gpu_sec = 23;
     float reserved_gpus = 24;
     int64 max_gpu_memory = 25;
+    int64 total_clock_sec = 26;
+    int64 rendered_clock_sec = 27;
+    int64 failed_clock_sec = 28;
 }
 
 // LAYER ----
