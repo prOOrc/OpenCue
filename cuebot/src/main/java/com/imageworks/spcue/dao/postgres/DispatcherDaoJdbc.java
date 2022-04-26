@@ -211,16 +211,17 @@ public class DispatcherDaoJdbc extends JdbcDaoSupport implements DispatcherDao {
                 s.skip(host);
                 continue;
             }
-
-            result.addAll(getJdbcTemplate().query(
-                    fifoSchedulingEnabled ? FIND_JOBS_FIFO_BY_SHOW : FIND_JOBS_BY_SHOW,
-                    PKJOB_MAPPER,
-                    s.getShowId(), host.getFacilityId(), host.os,
-                    host.idleCores, host.idleMemory,
-                    threadMode(host.threadMode),
-                    host.idleGpus,
-                    (host.idleGpuMemory > 0) ? 1 : 0, host.idleGpuMemory,
-                    host.getName(), numJobs * 10));
+            String query = fifoSchedulingEnabled ? FIND_JOBS_FIFO_BY_SHOW : FIND_JOBS_BY_SHOW;
+            List<String> dispatchJobs = getJdbcTemplate().query(
+                query,
+                PKJOB_MAPPER,
+                s.getShowId(), host.getFacilityId(), host.os,
+                host.idleCores, host.idleMemory,
+                threadMode(host.threadMode),
+                host.idleGpus,
+                (host.idleGpuMemory > 0) ? 1 : 0, host.idleGpuMemory,
+                host.getName(), numJobs * 10);
+            result.addAll(dispatchJobs);
 
             if (result.size() < 1) {
                 if (host.gpuMemory == 0) {
