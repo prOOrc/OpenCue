@@ -89,6 +89,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
         public HostInterface mapRow(final ResultSet rs, int rowNum) throws SQLException {
             return new HostInterface() {
                 final String id = rs.getString("pk_host");
+                final String vmId = rs.getString("str_vm_id");
                 final String allocid =  rs.getString("pk_alloc");
                 final String name = rs.getString("str_name");
                 final String facility =  rs.getString("pk_facility");
@@ -96,6 +97,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
                 public String getHostId() { return id; }
                 public String getAllocationId() { return allocid; }
                 public String getId() { return id; }
+                public String getVmId() { return vmId; }
                 public String getName() { return name; }
                 public String getFacilityId() { return facility; };
             };
@@ -169,6 +171,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             "host.pk_host, " +
             "host.pk_alloc,"+
             "host.str_name, " +
+            "host.str_vm_id, " +
             "alloc.pk_facility " +
         "FROM " +
             "host," +

@@ -73,6 +73,10 @@ public class HostEntity extends Entity implements HostInterface {
         return id;
     }
 
+    public String getVmId() {
+        return vmId;
+    }
+
     public String getAllocationId() {
         return allocId;
     }

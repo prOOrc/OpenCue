@@ -16,9 +16,9 @@
 -->
 
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
@@ -105,7 +105,7 @@
     </constructor-arg>
   </bean>
 
-  <bean id="manageQueue" class="com.imageworks.spcue.dispatcher.DispatchQueue"   destroy-method="shutdown">
+  <bean id="manageQueue" class="com.imageworks.spcue.dispatcher.DispatchQueue" destroy-method="shutdown">
     <constructor-arg index="0" type="java.lang.String">
       <value>ManageQueue</value>
     </constructor-arg>
@@ -330,6 +330,7 @@
     <property name="jobManager" ref="jobManager" />
     <property name="hostManager" ref="hostManager" />
     <property name="rqdClient" ref="rqdClient" />
+    <property name="eventManager" ref="rabbitEventManager" />
   </bean>
 
   <bean id="localDispatcher" class="com.imageworks.spcue.dispatcher.LocalDispatcher">
@@ -545,7 +546,9 @@
   </bean>
 
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" destroy-method="destroy">
-   <property name="waitForJobsToCompleteOnShutdown"><value>false</value></property>
+    <property name="waitForJobsToCompleteOnShutdown">
+      <value>false</value>
+    </property>
     <property name="triggers">
       <list>
         <ref bean="hardwareCheckTrigger" />

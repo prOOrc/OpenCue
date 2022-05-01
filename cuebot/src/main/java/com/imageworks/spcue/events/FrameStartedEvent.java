@@ -1,19 +1,19 @@
 package com.imageworks.spcue.events;
 
-public class FrameCompletedEvent {
+public class FrameStartedEvent {
     public String FrameId;
     public String LayerId;
     public String JobId;
     public String HostId;
     public String HostVmId;
-    public Long StopTime;
+    public Long StartTime;
     
-    public FrameCompletedEvent(String frameId, String layerId, String jobId, String hostId, String hostVmId, Long stopTime) {
+    public FrameStartedEvent(String frameId, String layerId, String jobId, String hostId, String hostVmId, Long startTime) {
         FrameId = frameId;
         LayerId = layerId;
         JobId = jobId;
         HostId = hostId;
         HostVmId = hostVmId;
-        StopTime = stopTime;
+        StartTime = startTime;
     }
 }

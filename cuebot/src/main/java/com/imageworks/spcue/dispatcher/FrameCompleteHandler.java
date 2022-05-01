@@ -325,7 +325,8 @@ public class FrameCompleteHandler {
                     frame.getLayerId(),
                     frame.getJobId(),
                     host.getId(),
-                    host.vmId));
+                    host.vmId,
+                    report.getFrame().getStartTime() + report.getRunTime()));
             if (job.state == JobState.FINISHED) {
                 eventManager.send("job.finished", new JobFinishedEvent(job.getId()));
             }
@@ -336,12 +337,13 @@ public class FrameCompleteHandler {
                     logger.info("the proc " + proc + " no longer has a local assignment.");
                     unbookProc = true;
                 }
-            } else if (host.vmId != null) {
-                if (!proc.isLocalDispatch) {
-                    logger.info("the proc " + proc
+            }
+            else if (host.vmId != null) {
+                logger.info("the proc " + proc
                             + " is on virtual machive.");
-                    unbookProc = true;
-                }
+                unbookProc = true;
+                hostManager.setHostLock(proc, LockState.LOCKED,
+                    new Source("FRAME_COMPLETED"));
             }
 
             /*

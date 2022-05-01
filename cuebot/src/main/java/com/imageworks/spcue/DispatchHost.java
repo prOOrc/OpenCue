@@ -69,6 +69,10 @@ public class DispatchHost extends Entity
         return id;
     }
 
+    public String getVmId() {
+        return vmId;
+    }
+
     public String getAllocationId() {
         return allocationId;
     }

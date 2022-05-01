@@ -76,13 +76,14 @@ def startup(app_name, app_version, argv):
 
     # Start splash screen
     splash = cuegui.SplashWindow.SplashWindow(
-        app, app_name, app_version, cuegui.Constants.RESOURCE_PATH)
+        app, app_name, app_version, cuegui.Constants.RESOURCE_PATH
+    )
 
     # Allow ctrl-c to kill the application
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     # Load window icon
-    app.setWindowIcon(QtGui.QIcon('%s/windowIcon.png' % cuegui.Constants.RESOURCE_PATH))
+    app.setWindowIcon(QtGui.QIcon("%s/windowIcon.png" % cuegui.Constants.RESOURCE_PATH))
 
     app.setApplicationName(app_name)
     app.lastWindowClosed.connect(app.quit)  # pylint: disable=no-member
@@ -93,10 +94,12 @@ def startup(app_name, app_version, argv):
     # pylint: enable=attribute-defined-outside-init
 
     config_path = "/.%s/config" % app_name.lower()
-    settings = QtCore.QSettings(QtCore.QSettings.IniFormat, QtCore.QSettings.UserScope, config_path)
+    settings = QtCore.QSettings(
+        QtCore.QSettings.IniFormat, QtCore.QSettings.UserScope, config_path
+    )
     local = settings.fileName()
     # If the user has chose to revert the layout. delete the file and copy the default back.
-    if settings.value('RevertLayout'):
+    if settings.value("RevertLayout"):
         os.remove(local)
 
     QtGui.qApp.settings = settings  # pylint: disable=attribute-defined-outside-init
@@ -106,8 +109,10 @@ def startup(app_name, app_version, argv):
     # If the config file does not exist, copy over the default
     # pylint: disable=broad-except
     if not os.path.exists(local):
-        default = os.path.join(cuegui.Constants.DEFAULT_INI_PATH, "%s.ini" % app_name.lower())
-        logger.warning('Not found: %s\nCopying:   %s', local, default)
+        default = os.path.join(
+            cuegui.Constants.DEFAULT_INI_PATH, "%s.ini" % app_name.lower()
+        )
+        logger.warning("Not found: %s\nCopying:   %s", local, default)
         try:
             os.mkdir(os.path.dirname(local))
         except Exception as e:
@@ -119,13 +124,14 @@ def startup(app_name, app_version, argv):
         settings.sync()
     # pylint: enable=broad-except
 
-    mainWindow = cuegui.MainWindow.MainWindow(app_name, app_version,  None)
+    mainWindow = cuegui.MainWindow.MainWindow(app_name, app_version, None)
     mainWindow.displayStartupNotice()
     mainWindow.show()
 
     # Open all windows that were open when the app was last closed
     for name in mainWindow.windows_names[1:]:
-        if settings.value("%s/Open" % name, False):
+        is_open = settings.value("%s/Open" % name)
+        if is_open is not None and is_open.lower() == "true":
             mainWindow.windowMenuOpenWindow(name)
 
     # End splash screen
@@ -133,7 +139,9 @@ def startup(app_name, app_version, argv):
 
     # TODO(#609) Refactor the CueGUI classes to make this garbage collector
     #   replacement unnecessary.
-    gc = cuegui.GarbageCollector.GarbageCollector(parent=app, debug=False)  # pylint: disable=unused-variable
+    gc = cuegui.GarbageCollector.GarbageCollector(
+        parent=app, debug=False
+    )  # pylint: disable=unused-variable
     app.aboutToQuit.connect(closingTime)  # pylint: disable=no-member
     app.exec_()
 

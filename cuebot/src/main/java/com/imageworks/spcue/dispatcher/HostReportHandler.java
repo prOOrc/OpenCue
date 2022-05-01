@@ -167,6 +167,8 @@ public class HostReportHandler {
                  */
                 if (isBoot) {
                     hostManager.setHostResources(host, report);
+                    hostManager.setHostLock(host, LockState.OPEN,
+                        new Source("BOOT"));
                 }
 
                 dispatchSupport.determineIdleCores(host, report.getHost().getLoad());

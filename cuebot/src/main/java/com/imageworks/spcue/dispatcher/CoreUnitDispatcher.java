@@ -32,6 +32,7 @@ import org.springframework.core.env.Environment;
 import com.imageworks.spcue.DispatchFrame;
 import com.imageworks.spcue.DispatchHost;
 import com.imageworks.spcue.DispatchJob;
+import com.imageworks.spcue.FrameDetail;
 import com.imageworks.spcue.FrameInterface;
 import com.imageworks.spcue.GroupInterface;
 import com.imageworks.spcue.JobDispatchException;
@@ -39,11 +40,12 @@ import com.imageworks.spcue.JobInterface;
 import com.imageworks.spcue.LayerInterface;
 import com.imageworks.spcue.ShowInterface;
 import com.imageworks.spcue.VirtualProc;
+import com.imageworks.spcue.events.FrameStartedEvent;
 import com.imageworks.spcue.rqd.RqdClient;
 import com.imageworks.spcue.rqd.RqdClientException;
+import com.imageworks.spcue.service.EventManager;
 import com.imageworks.spcue.service.HostManager;
 import com.imageworks.spcue.service.JobManager;
-import com.imageworks.spcue.util.CueExceptionUtil;
 import com.imageworks.spcue.util.CueUtil;
 
 /**
@@ -95,6 +97,8 @@ public class CoreUnitDispatcher implements Dispatcher {
     private RqdClient rqdClient;
 
     private HostManager hostManager;
+
+    private EventManager eventManager;
 
     public boolean testMode = false;
 
@@ -377,6 +381,20 @@ public class CoreUnitDispatcher implements Dispatcher {
         if (!testMode) {
             dispatchSupport.runFrame(proc,frame);
         }
+        
+        FrameDetail frameDetail = jobManager.getFrameDetail(frame.getId());
+        /*
+        * Send frame completed event
+        */
+        eventManager.send(
+            "frame.started",
+            new FrameStartedEvent(
+                frame.getId(),
+                frame.getLayerId(),
+                frame.getJobId(),
+                proc.getHostId(),
+                proc.getVmId(),
+                frameDetail.dateStarted.getTime()));
     }
 
     @Override
@@ -436,6 +454,14 @@ public class CoreUnitDispatcher implements Dispatcher {
 
     public void setHostManager(HostManager hostManager) {
         this.hostManager = hostManager;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
+    }
+
+    public void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
     }
 
     public RqdClient getRqdClient() {
