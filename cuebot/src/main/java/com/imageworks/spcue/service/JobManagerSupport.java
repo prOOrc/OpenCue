@@ -41,6 +41,7 @@ import com.imageworks.spcue.dispatcher.DispatchSupport;
 import com.imageworks.spcue.dispatcher.Dispatcher;
 import com.imageworks.spcue.dispatcher.RedirectManager;
 import com.imageworks.spcue.dispatcher.commands.DispatchJobComplete;
+import com.imageworks.spcue.events.JobFinishedEvent;
 import com.imageworks.spcue.grpc.depend.DependTarget;
 import com.imageworks.spcue.grpc.job.FrameSearchCriteria;
 import com.imageworks.spcue.grpc.job.FrameState;
@@ -67,6 +68,7 @@ public class JobManagerSupport {
     private RedirectManager redirectManager;
     private EmailSupport emailSupport;
     private FrameSearchFactory frameSearchFactory;
+    private EventManager eventManager;
 
     public void queueShutdownJob(JobInterface job, Source source, boolean isManualKill) {
         manageQueue.execute(new DispatchJobComplete(job, source, isManualKill, this));
@@ -142,6 +144,7 @@ public class JobManagerSupport {
              * will have inaccurate numbers.
              */
             emailSupport.sendShutdownEmail(job);
+            eventManager.send("job.finished", new JobFinishedEvent(job.getId()));
 
             return true;
         }
@@ -608,5 +611,12 @@ public class JobManagerSupport {
     public void setFrameSearchFactory(FrameSearchFactory frameSearchFactory) {
         this.frameSearchFactory = frameSearchFactory;
     }
-}
 
+    public EventManager getEventManager() {
+        return eventManager;
+    }
+
+    public void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
+    }
+}

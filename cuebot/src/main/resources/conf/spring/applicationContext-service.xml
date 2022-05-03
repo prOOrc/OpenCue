@@ -248,6 +248,7 @@
     <property name="redirectManager" ref="redirectManager" />
     <property name="emailSupport" ref="emailSupport"/>
     <property name="frameSearchFactory" ref="frameSearchFactory" />
+    <property name="eventManager" ref="rabbitEventManager"/>
   </bean>
 
   <bean id="jobLauncher" class="com.imageworks.spcue.service.JobLauncher">
