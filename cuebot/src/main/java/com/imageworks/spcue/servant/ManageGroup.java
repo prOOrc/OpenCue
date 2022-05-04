@@ -169,6 +169,11 @@ public class ManageGroup extends GroupInterfaceGrpc.GroupInterfaceImplBase {
         GroupInterface group = getGroupInterface(request.getGroup());
         try {
             groupManager.deleteGroup(group);
+        } catch (EmptyResultDataAccessException e) {
+            responseObserver.onError(Status.NOT_FOUND
+                    .withDescription("Failed to find group")
+                    .withCause(e)
+                    .asRuntimeException());
         } catch (Exception e) {
             responseObserver.onError(Status.INTERNAL
                     .withDescription("Failed to remove group, be sure that there are no " +

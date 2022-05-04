@@ -239,7 +239,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -256,7 +256,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -272,7 +272,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -332,7 +332,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -347,7 +347,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -362,7 +362,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -377,7 +377,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -392,7 +392,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -407,7 +407,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -422,7 +422,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -439,7 +439,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -458,7 +458,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -477,7 +477,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -495,7 +495,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -514,7 +514,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -529,7 +529,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -549,7 +549,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -569,7 +569,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -589,7 +589,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -605,7 +605,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -622,7 +622,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -638,7 +638,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -661,7 +661,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             System.out.println(e);
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -676,7 +676,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -697,7 +697,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -713,7 +713,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -728,7 +728,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -743,7 +743,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -760,7 +760,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -777,7 +777,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -793,7 +793,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -810,7 +810,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -837,7 +837,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
                             .build());
                     responseObserver.onCompleted();
                 } catch (EmptyResultDataAccessException e) {
-                    responseObserver.onError(Status.INTERNAL
+                    responseObserver.onError(Status.NOT_FOUND
                             .withDescription("Failed to allocate render partition to host.")
                             .asRuntimeException());
                 }
@@ -848,7 +848,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             }
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
@@ -864,7 +864,7 @@ public class ManageJob extends JobInterfaceGrpc.JobInterfaceImplBase {
             responseObserver.onCompleted();
         }
         catch (EmptyResultDataAccessException e) {
-            responseObserver.onError(Status.INTERNAL
+            responseObserver.onError(Status.NOT_FOUND
                     .withDescription("Failed to find job data")
                     .asRuntimeException());
         }
