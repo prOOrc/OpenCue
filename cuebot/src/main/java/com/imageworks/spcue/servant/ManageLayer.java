@@ -71,6 +71,8 @@ import com.imageworks.spcue.grpc.job.LayerGetFramesRequest;
 import com.imageworks.spcue.grpc.job.LayerGetFramesResponse;
 import com.imageworks.spcue.grpc.job.LayerGetLayerRequest;
 import com.imageworks.spcue.grpc.job.LayerGetLayerResponse;
+import com.imageworks.spcue.grpc.job.LayerGetLayersByJobIdsRequest;
+import com.imageworks.spcue.grpc.job.LayerGetLayersByJobIdsResponse;
 import com.imageworks.spcue.grpc.job.LayerGetLimitsRequest;
 import com.imageworks.spcue.grpc.job.LayerGetLimitsResponse;
 import com.imageworks.spcue.grpc.job.LayerGetOutputPathsRequest;
@@ -90,6 +92,7 @@ import com.imageworks.spcue.grpc.job.LayerReorderFramesRequest;
 import com.imageworks.spcue.grpc.job.LayerReorderFramesResponse;
 import com.imageworks.spcue.grpc.job.LayerRetryFramesRequest;
 import com.imageworks.spcue.grpc.job.LayerRetryFramesResponse;
+import com.imageworks.spcue.grpc.job.LayerSeq;
 import com.imageworks.spcue.grpc.job.LayerSetMaxCoresRequest;
 import com.imageworks.spcue.grpc.job.LayerSetMaxCoresResponse;
 import com.imageworks.spcue.grpc.job.LayerSetMinCoresRequest;
@@ -141,6 +144,22 @@ public class ManageLayer extends LayerInterfaceGrpc.LayerInterfaceImplBase {
         try {
             responseObserver.onNext(LayerFindLayerResponse.newBuilder()
                     .setLayer(whiteboard.findLayer(request.getJob(), request.getLayer()))
+                    .build());
+            responseObserver.onCompleted();
+        } catch (EmptyResultDataAccessException e) {
+            responseObserver.onError(Status.NOT_FOUND
+                    .withDescription(e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException());
+        }
+    }
+
+    @Override
+    public void getLayersByJobIds(LayerGetLayersByJobIdsRequest request, StreamObserver<LayerGetLayersByJobIdsResponse> responseObserver) {
+        try {
+            LayerSeq layerSeq = whiteboard.getLayersByJobIds(request.getJobsList());
+            responseObserver.onNext(LayerGetLayersByJobIdsResponse.newBuilder()
+                    .setLayers(layerSeq)
                     .build());
             responseObserver.onCompleted();
         } catch (EmptyResultDataAccessException e) {

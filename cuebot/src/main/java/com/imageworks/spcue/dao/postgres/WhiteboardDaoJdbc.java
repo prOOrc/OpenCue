@@ -369,6 +369,22 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
         return LayerSeq.newBuilder().addAllLayers(layers).build();
     }
 
+    @Override
+    public LayerSeq getLayersByIds(List<String> ids) {
+        String query = GET_LAYER_WITH_LIMITS + " WHERE " + SqlUtil.buildBindVariableArray("layer.pk_layer", ids.size()) + " ORDER BY layer.int_dispatch_order ASC";
+        List<Layer> layers = getJdbcTemplate().query(
+                query, LAYER_MAPPER, ids.toArray());
+        return LayerSeq.newBuilder().addAllLayers(layers).build();
+    }
+
+    @Override
+    public LayerSeq getLayersByJobIds(List<String> jobIds) {
+        String query = GET_LAYER_WITH_LIMITS + " WHERE " + SqlUtil.buildBindVariableArray("layer.pk_job", jobIds.size()) + " ORDER BY layer.int_dispatch_order ASC";
+        List<Layer> layers = getJdbcTemplate().query(
+                query, LAYER_MAPPER, jobIds.toArray());
+        return LayerSeq.newBuilder().addAllLayers(layers).build();
+    }
+
     public Layer addLimitNames(Layer layer) {
         return layer.toBuilder().addAllLimits(getLimitNames(layer.getId())).build();
     }
@@ -430,6 +446,17 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
     public FrameSeq getFrames(FrameSearchInterface r) {
         List<Frame> frames = getJdbcTemplate().query(
                 r.getSortedQuery(GET_FRAMES_CRITERIA), FRAME_MAPPER, r.getValuesArray());
+        return FrameSeq.newBuilder().addAllFrames(frames).build();
+    }
+
+    @Override
+    public FrameSeq getFramesByLayerIds(List<String> layersIds) {
+        String query = GET_FRAMES_CRITERIA + 
+            "AND " + 
+            SqlUtil.buildBindVariableArray("layer.pk_layer", layersIds.size()) +
+            " ORDER BY frame.int_dispatch_order ASC, frame.int_number ASC";
+        List<Frame> frames = getJdbcTemplate().query(
+            query, FRAME_MAPPER, layersIds.toArray());
         return FrameSeq.newBuilder().addAllFrames(frames).build();
     }
 
@@ -1393,6 +1420,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
                 public Frame mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Frame.Builder builder = Frame.newBuilder()
                             .setId(SqlUtil.getString(rs,"pk_frame"))
+                            .setLayerId(SqlUtil.getString(rs,"pk_layer"))
                             .setName(SqlUtil.getString(rs,"str_name"))
                             .setExitStatus(rs.getInt("int_exit_status"))
                             .setMaxRss(rs.getLong("int_mem_max_used"))
@@ -1428,6 +1456,13 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
                     }
                     else {
                         builder.setStopTime(0);
+                    }
+                    java.sql.Timestamp ts_llu = rs.getTimestamp("ts_llu");
+                    if (ts_llu!= null) {
+                        builder.setLluTime((int) (ts_llu.getTime() / 1000));
+                    }
+                    else {
+                        builder.setLluTime(0);
                     }
 
                     builder.setTotalCoreTime(rs.getInt("int_total_past_core_time"));
@@ -1559,6 +1594,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
     private static final String GET_FRAME =
         "SELECT " +
             "frame.pk_frame, " +
+            "frame.pk_layer, " +
             "frame.int_exit_status,"+
             "frame.str_name,"+
             "frame.int_number,"+
@@ -2224,6 +2260,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
 
         "SELECT " +
             "frame.pk_frame, " +
+            "frame.pk_layer, " +
             "frame.int_exit_status,"+
             "frame.str_name,"+
             "frame.int_number,"+

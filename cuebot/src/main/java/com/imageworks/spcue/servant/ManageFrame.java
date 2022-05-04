@@ -28,6 +28,7 @@ import com.imageworks.spcue.LocalHostAssignment;
 import com.imageworks.spcue.Source;
 import com.imageworks.spcue.dao.FrameDao;
 import com.imageworks.spcue.dao.criteria.FrameSearchFactory;
+import com.imageworks.spcue.dao.criteria.FrameSearchInterface;
 import com.imageworks.spcue.depend.FrameOnFrame;
 import com.imageworks.spcue.depend.FrameOnJob;
 import com.imageworks.spcue.depend.FrameOnLayer;
@@ -54,6 +55,8 @@ import com.imageworks.spcue.grpc.job.FrameFindFrameRequest;
 import com.imageworks.spcue.grpc.job.FrameFindFrameResponse;
 import com.imageworks.spcue.grpc.job.FrameGetFrameRequest;
 import com.imageworks.spcue.grpc.job.FrameGetFrameResponse;
+import com.imageworks.spcue.grpc.job.FrameGetFramesByLayerIdsRequest;
+import com.imageworks.spcue.grpc.job.FrameGetFramesByLayerIdsResponse;
 import com.imageworks.spcue.grpc.job.FrameGetFramesRequest;
 import com.imageworks.spcue.grpc.job.FrameGetFramesResponse;
 import com.imageworks.spcue.grpc.job.FrameGetWhatDependsOnThisRequest;
@@ -69,6 +72,7 @@ import com.imageworks.spcue.grpc.job.FrameMarkAsWaitingRequest;
 import com.imageworks.spcue.grpc.job.FrameMarkAsWaitingResponse;
 import com.imageworks.spcue.grpc.job.FrameRetryRequest;
 import com.imageworks.spcue.grpc.job.FrameRetryResponse;
+import com.imageworks.spcue.grpc.job.FrameSeq;
 import com.imageworks.spcue.grpc.job.FrameSetCheckpointStateRequest;
 import com.imageworks.spcue.grpc.job.FrameSetCheckpointStateResponse;
 import com.imageworks.spcue.grpc.renderpartition.RenderPartition;
@@ -130,6 +134,22 @@ public class ManageFrame extends FrameInterfaceGrpc.FrameInterfaceImplBase {
                                         request.getR())))
                 .build());
         responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getFramesByLayerIds(FrameGetFramesByLayerIdsRequest request, StreamObserver<FrameGetFramesByLayerIdsResponse> responseObserver) {
+        try {
+            FrameSeq frameSeq = whiteboard.getFramesByLayerIds(request.getLayerIdsList());
+            responseObserver.onNext(FrameGetFramesByLayerIdsResponse.newBuilder()
+                    .setFrames(frameSeq)
+                    .build());
+            responseObserver.onCompleted();
+        } catch (EmptyResultDataAccessException e) {
+            responseObserver.onError(Status.NOT_FOUND
+                    .withDescription(e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException());
+        }
     }
 
     @Override

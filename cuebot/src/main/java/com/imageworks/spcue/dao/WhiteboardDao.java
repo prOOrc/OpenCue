@@ -276,12 +276,36 @@ public interface WhiteboardDao {
     FrameSeq getFrames(FrameSearchInterface r);
 
     /**
+     * Returns a list of frames for the specified layer ids.
+     *
+     * @param ids List<String>
+     * @return FrameSeq
+     */
+    FrameSeq getFramesByLayerIds(List<String> layersIds);
+
+    /**
      * Returns a list of layers for the specified job.
      *
      * @param  job JobInterface
      * @return LayerSeq
      */
     LayerSeq getLayers(JobInterface job);
+
+    /**
+     * Returns a list of layers for the specified ids.
+     *
+     * @param  ids List<String>
+     * @return LayerSeq
+     */
+    LayerSeq getLayersByIds(List<String> ids);
+
+    /**
+     * Returns a list of layers for the specified job ids.
+     *
+     * @param  jobIds List<String>
+     * @return LayerSeq
+     */
+    LayerSeq getLayersByJobIds(List<String> jobIds);
 
     /**
      * Returns a layer from its unique ID

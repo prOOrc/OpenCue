@@ -44,6 +44,9 @@ service FrameInterface {
     // Get a frame from search criteria
     rpc GetFrames(FrameGetFramesRequest) returns (FrameGetFramesResponse);
 
+    // Get a frame by layer ids
+    rpc GetFramesByLayerIds(FrameGetFramesByLayerIdsRequest) returns (FrameGetFramesByLayerIdsResponse);
+
     // Returns a list of dependencies setup to depend on this frame.
     rpc GetWhatDependsOnThis(FrameGetWhatDependsOnThisRequest) returns (FrameGetWhatDependsOnThisResponse);
 
@@ -317,6 +320,12 @@ service LayerInterface {
     // Finds a layer in a pending job from its unique ID
     rpc GetLayer(LayerGetLayerRequest) returns (LayerGetLayerResponse);
 
+    // Finds layers by IDs
+    rpc GetLayersByIds(LayerGetLayersByIdsRequest) returns (LayerGetLayersByIdsResponse);
+
+    // Finds layers by job IDs
+    rpc GetLayersByJobIds(LayerGetLayersByJobIdsRequest) returns (LayerGetLayersByJobIdsResponse);
+
     // Return a list of the limits on the specified layer.
     rpc GetLimits(LayerGetLimitsRequest) returns (LayerGetLimitsResponse);
 
@@ -491,6 +500,7 @@ message Frame {
     int64 max_gpu_memory = 21;
     int64 used_gpu_memory = 22;
     string log_path = 23;
+    string layer_id = 24;
 }
 
 // Object for frame searching
@@ -865,6 +875,15 @@ message FrameGetFramesRequest {
 }
 
 message FrameGetFramesResponse {
+    FrameSeq frames = 1;
+}
+
+// GetFramesByLayerIds
+message FrameGetFramesByLayerIdsRequest {
+    repeated string layer_ids = 1;
+}
+
+message FrameGetFramesByLayerIdsResponse {
     FrameSeq frames = 1;
 }
 
@@ -1576,6 +1595,24 @@ message LayerGetLayerRequest {
 
 message LayerGetLayerResponse {
     Layer layer = 1;
+}
+
+// GetLayersByIds
+message LayerGetLayersByIdsRequest {
+    repeated string ids = 1;
+}
+
+message LayerGetLayersByIdsResponse {
+    LayerSeq layers = 1;
+}
+
+// GetLayersByJobIds
+message LayerGetLayersByJobIdsRequest {
+    repeated string jobs = 1;
+}
+
+message LayerGetLayersByJobIdsResponse {
+    LayerSeq layers = 1;
 }
 
 // GetLayer

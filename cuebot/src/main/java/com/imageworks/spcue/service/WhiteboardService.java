@@ -139,6 +139,14 @@ public class WhiteboardService implements Whiteboard {
         return whiteboardDao.getLayers(job);
     }
 
+    public LayerSeq getLayersByIds(List<String> ids) {
+        return whiteboardDao.getLayersByIds(ids);
+    }
+
+    public LayerSeq getLayersByJobIds(List<String> jobIds) {
+        return whiteboardDao.getLayersByJobIds(jobIds);
+    }
+
     public List<String> getJobNames(JobSearchInterface r) {
         return whiteboardDao.getJobNames(r);
     }
@@ -152,7 +160,11 @@ public class WhiteboardService implements Whiteboard {
     }
 
     public FrameSeq getFrames(FrameSearchInterface r) {
-        return this.whiteboardDao.getFrames(r);
+        return whiteboardDao.getFrames(r);
+    }
+
+    public FrameSeq getFramesByLayerIds(List<String> layerIds) {
+        return whiteboardDao.getFramesByLayerIds(layerIds);
     }
 
     public NestedHostSeq getHostWhiteboard() {
