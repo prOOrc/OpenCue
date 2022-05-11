@@ -71,6 +71,8 @@ import com.imageworks.spcue.grpc.job.LayerGetFramesRequest;
 import com.imageworks.spcue.grpc.job.LayerGetFramesResponse;
 import com.imageworks.spcue.grpc.job.LayerGetLayerRequest;
 import com.imageworks.spcue.grpc.job.LayerGetLayerResponse;
+import com.imageworks.spcue.grpc.job.LayerGetLayersByIdsRequest;
+import com.imageworks.spcue.grpc.job.LayerGetLayersByIdsResponse;
 import com.imageworks.spcue.grpc.job.LayerGetLayersByJobIdsRequest;
 import com.imageworks.spcue.grpc.job.LayerGetLayersByJobIdsResponse;
 import com.imageworks.spcue.grpc.job.LayerGetLimitsRequest;
@@ -144,6 +146,22 @@ public class ManageLayer extends LayerInterfaceGrpc.LayerInterfaceImplBase {
         try {
             responseObserver.onNext(LayerFindLayerResponse.newBuilder()
                     .setLayer(whiteboard.findLayer(request.getJob(), request.getLayer()))
+                    .build());
+            responseObserver.onCompleted();
+        } catch (EmptyResultDataAccessException e) {
+            responseObserver.onError(Status.NOT_FOUND
+                    .withDescription(e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException());
+        }
+    }
+
+    @Override
+    public void getLayersByIds(LayerGetLayersByIdsRequest request, StreamObserver<LayerGetLayersByIdsResponse> responseObserver) {
+        try {
+            LayerSeq layerSeq = whiteboard.getLayersByIds(request.getIdsList());
+            responseObserver.onNext(LayerGetLayersByIdsResponse.newBuilder()
+                    .setLayers(layerSeq)
                     .build());
             responseObserver.onCompleted();
         } catch (EmptyResultDataAccessException e) {

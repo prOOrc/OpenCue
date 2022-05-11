@@ -902,11 +902,6 @@ class RqCore(object):
 
     def getCoreInfo(self):
         """Gets the core info report."""
-        log.warning('Core Info:')
-        log.warning('total_cores: %s', str(self.cores.total_cores))
-        log.warning('locked_cores: %s', str(self.cores.locked_cores))
-        log.warning('idle_cores: %s', str(self.cores.idle_cores))
-        log.warning('booked_cores: %s', str(self.cores.booked_cores))
         return self.cores
 
     def reportStatus(self):
