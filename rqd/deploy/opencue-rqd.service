@@ -7,7 +7,7 @@ After=network.target
 Environment=OPTIONS=
 Environment=BIN=/usr/bin
 EnvironmentFile=-/etc/sysconfig/opencue-rqd
-ExecStart=/bin/bash -c "${BIN}/rqd ${OPTIONS}"
+ExecStart=/bin/bash -lc "${BIN}/rqd ${OPTIONS}"
 LimitNOFILE=500000
 LimitNPROC=500000
 StandardOutput=syslog+console
