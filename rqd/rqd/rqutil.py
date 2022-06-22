@@ -207,7 +207,7 @@ def getVmInfo():
                         cores = int(attributes["cores"])
                     except ValueError:
                         pass
-                if "hyperthreading_multiplier" in attributes:
+                if "hyperthreading-multiplier" in attributes:
                     try:
                         hyperthreading_multiplier = int(attributes["hyperthreading-multiplier"])
                     except ValueError:
