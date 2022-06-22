@@ -183,6 +183,7 @@ def getVmInfo():
     cores = None
     memory = None
     gpus = None
+    hyperthreading_multiplier = None
     try:
         response = requests.get(
             "http://169.254.169.254/computeMetadata/v1/instance/?recursive=true",
@@ -206,6 +207,11 @@ def getVmInfo():
                         cores = int(attributes["cores"])
                     except ValueError:
                         pass
+                if "hyperthreading_multiplier" in attributes:
+                    try:
+                        hyperthreading_multiplier = int(attributes["hyperthreading_multiplier"])
+                    except ValueError:
+                        pass
                 if "memory" in attributes:
                     try:
                         memory = int(attributes["memory"])
@@ -224,6 +230,7 @@ def getVmInfo():
                 "VM_ID": vm_id,
                 "VM_NAME": vm_name,
                 "CORES": cores,
+                "HYPERTHREADING_MULTIPLIER": hyperthreading_multiplier,
                 "MEMORY": memory,
                 "GPUS": gpus,
             }

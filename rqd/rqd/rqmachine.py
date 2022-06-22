@@ -569,8 +569,11 @@ class Machine(object):
         if rqd.rqconstants.OVERRIDE_CORES is not None:
             log.warning("Manually overriding the number of reported cores")
             __totalCores = rqd.rqconstants.OVERRIDE_CORES * rqd.rqconstants.CORE_VALUE
-        elif self.__vmInfo is not None and self.__vmInfo["CORES"] is not None:
-            __totalCores = self.__vmInfo["CORES"]
+        elif self.__vmInfo is not None:
+            if self.__vmInfo["CORES"] is not None:
+                __totalCores = self.__vmInfo["CORES"]
+            if self.__vmInfo["HYPERTHREADING_MULTIPLIER"] is not None:
+                hyperthreadingMultiplier = self.__vmInfo["HYPERTHREADING_MULTIPLIER"]
 
         if rqd.rqconstants.OVERRIDE_PROCS is not None:
             log.warning("Manually overriding the number of reported procs")
