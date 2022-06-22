@@ -209,7 +209,7 @@ def getVmInfo():
                         pass
                 if "hyperthreading_multiplier" in attributes:
                     try:
-                        hyperthreading_multiplier = int(attributes["hyperthreading_multiplier"])
+                        hyperthreading_multiplier = int(attributes["hyperthreading-multiplier"])
                     except ValueError:
                         pass
                 if "memory" in attributes:
