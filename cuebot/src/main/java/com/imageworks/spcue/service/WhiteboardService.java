@@ -388,8 +388,8 @@ public class WhiteboardService implements Whiteboard {
     }
 
     @Override
-    public Host getHostByVmId(String vmId) {
-        return whiteboardDao.getHostByVmId(vmId);
+    public Host getHostByRenderNodeId(String renderNodeId) {
+        return whiteboardDao.getHostByRenderNodeId(renderNodeId);
     }
 
     @Override

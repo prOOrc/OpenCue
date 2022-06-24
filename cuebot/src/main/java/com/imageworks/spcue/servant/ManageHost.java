@@ -48,8 +48,8 @@ import com.imageworks.spcue.grpc.host.HostGetCommentsRequest;
 import com.imageworks.spcue.grpc.host.HostGetCommentsResponse;
 import com.imageworks.spcue.grpc.host.HostGetDeedRequest;
 import com.imageworks.spcue.grpc.host.HostGetDeedResponse;
-import com.imageworks.spcue.grpc.host.HostGetHostByVmIdRequest;
-import com.imageworks.spcue.grpc.host.HostGetHostByVmIdResponse;
+import com.imageworks.spcue.grpc.host.HostGetHostByRenderNodeIdRequest;
+import com.imageworks.spcue.grpc.host.HostGetHostByRenderNodeIdResponse;
 import com.imageworks.spcue.grpc.host.HostGetHostRequest;
 import com.imageworks.spcue.grpc.host.HostGetHostResponse;
 import com.imageworks.spcue.grpc.host.HostGetHostWhiteboardRequest;
@@ -154,11 +154,11 @@ public class ManageHost extends HostInterfaceGrpc.HostInterfaceImplBase {
     }
 
     @Override
-    public void getHostByVmId(HostGetHostByVmIdRequest request,
-                         StreamObserver<HostGetHostByVmIdResponse> responseObserver) {
+    public void getHostByRenderNodeId(HostGetHostByRenderNodeIdRequest request,
+                         StreamObserver<HostGetHostByRenderNodeIdResponse> responseObserver) {
         try {
-            responseObserver.onNext(HostGetHostByVmIdResponse.newBuilder()
-                    .setHost(whiteboard.getHostByVmId(request.getVmId()))
+            responseObserver.onNext(HostGetHostByRenderNodeIdResponse.newBuilder()
+                    .setHost(whiteboard.getHostByRenderNodeId(request.getRenderNodeId()))
                     .build());
             responseObserver.onCompleted();
         } catch (EmptyResultDataAccessException e) {

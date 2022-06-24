@@ -569,9 +569,9 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
     }
 
     @Override
-    public Host getHostByVmId(String vmId) {
+    public Host getHostByRenderNodeId(String renderNodeId) {
         return getJdbcTemplate().queryForObject(
-                GET_HOST + " AND host.str_vm_id=?", HOST_MAPPER, vmId);
+                GET_HOST + " AND host.str_render_node_id=?", HOST_MAPPER, renderNodeId);
     }
 
     @Override
@@ -1102,7 +1102,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
         builder.setHasComment(rs.getBoolean("b_comment"));
         builder.setThreadMode(ThreadMode.values()[rs.getInt("int_thread_mode")]);
         builder.setOs(SqlUtil.getString(rs,"str_os"));
-        builder.setVmId(SqlUtil.getString(rs,"str_vm_id"));
+        builder.setRenderNodeId(SqlUtil.getString(rs,"str_render_node_id"));
 
         String tags =  SqlUtil.getString(rs,"str_tags");
         if (tags != null)
@@ -2188,7 +2188,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
             "host.str_lock_state,"+
             "host.b_comment,"+
             "host.int_thread_mode,"+
-            "host.str_vm_id,"+
+            "host.str_render_node_id,"+
             "host_stat.str_os,"+
             "host_stat.int_mem_total,"+
             "host_stat.int_mem_free,"+

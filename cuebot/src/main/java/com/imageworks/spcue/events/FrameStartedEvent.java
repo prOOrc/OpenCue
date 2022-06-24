@@ -5,15 +5,15 @@ public class FrameStartedEvent {
     public String LayerId;
     public String JobId;
     public String HostId;
-    public String HostVmId;
+    public String HostRenderNodeId;
     public Long StartTime;
     
-    public FrameStartedEvent(String frameId, String layerId, String jobId, String hostId, String hostVmId, Long startTime) {
+    public FrameStartedEvent(String frameId, String layerId, String jobId, String hostId, String hostRenderNodeId, Long startTime) {
         FrameId = frameId;
         LayerId = layerId;
         JobId = jobId;
         HostId = hostId;
-        HostVmId = hostVmId;
+        HostRenderNodeId = hostRenderNodeId;
         StartTime = startTime;
     }
 }

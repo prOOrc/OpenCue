@@ -25,7 +25,7 @@ import com.imageworks.spcue.grpc.host.ThreadMode;
 public class VirtualProc extends FrameEntity implements ProcInterface {
 
     public String hostId;
-    public String vmId;
+    public String renderNodeId;
     public String allocationId;
     public String frameId;
     public String hostName;
@@ -55,8 +55,8 @@ public class VirtualProc extends FrameEntity implements ProcInterface {
         return hostId;
     }
 
-    public String getVmId() {
-        return vmId;
+    public String getRenderNodeId() {
+        return renderNodeId;
     }
 
     public String getAllocationId() {
@@ -87,7 +87,7 @@ public class VirtualProc extends FrameEntity implements ProcInterface {
         VirtualProc proc = new VirtualProc();
         proc.allocationId = host.getAllocationId();
         proc.hostId = host.getHostId();
-        proc.vmId = host.getVmId();
+        proc.renderNodeId = host.getRenderNodeId();
         proc.frameId = null;
         proc.layerId = frame.getLayerId();
         proc.jobId = frame.getJobId();
@@ -205,7 +205,7 @@ public class VirtualProc extends FrameEntity implements ProcInterface {
         VirtualProc proc = new VirtualProc();
         proc.allocationId = host.getAllocationId();
         proc.hostId = host.getHostId();
-        proc.vmId = host.getVmId();
+        proc.renderNodeId = host.getRenderNodeId();
         proc.frameId = null;
         proc.layerId = frame.getLayerId();
         proc.jobId = frame.getJobId();

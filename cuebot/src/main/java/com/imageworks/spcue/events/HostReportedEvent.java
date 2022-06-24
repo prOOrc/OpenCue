@@ -7,12 +7,12 @@ import com.imageworks.spcue.grpc.report.RunningFrameInfo;
 
 public class HostReportedEvent {
     public String HostId;
-    public String HostVmId;
+    public String HostRenderNodeId;
     public Boolean IsBoot;
     public List<RunningFrame> Frames;
-    public HostReportedEvent(String hostId, String hostVmId, Boolean isBoot, List<RunningFrameInfo> frames) {
+    public HostReportedEvent(String hostId, String hostRenderNodeId, Boolean isBoot, List<RunningFrameInfo> frames) {
         HostId = hostId;
-        HostVmId = hostVmId;
+        HostRenderNodeId = hostRenderNodeId;
         IsBoot = isBoot;
         Frames = new LinkedList<RunningFrame>();
         for (RunningFrameInfo runningFrameInfo : frames) {

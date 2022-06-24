@@ -21,7 +21,7 @@ package com.imageworks.spcue;
 
 public class MinimalHost extends Entity implements HostInterface {
 
-    public String vmId;
+    public String renderNodeId;
     public String allocId;
     public String facilityId;
 
@@ -33,8 +33,8 @@ public class MinimalHost extends Entity implements HostInterface {
         return this.id;
     }
 
-    public String getVmId() {
-        return this.id;
+    public String getRenderNodeId() {
+        return this.renderNodeId;
     }
 
     public String getAllocationId() {

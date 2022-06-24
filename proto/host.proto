@@ -47,7 +47,7 @@ service HostInterface {
     rpc GetHost(HostGetHostRequest) returns (HostGetHostResponse);
 
     // Return a host by its vm id
-    rpc GetHostByVmId(HostGetHostByVmIdRequest) returns (HostGetHostByVmIdResponse);
+    rpc GetHostByRenderNodeId(HostGetHostByRenderNodeIdRequest) returns (HostGetHostByRenderNodeIdResponse);
 
     // Search for a number of hosts
     rpc GetHosts(HostGetHostsRequest) returns (HostGetHostsResponse);
@@ -272,7 +272,7 @@ message Host {
     ThreadMode thread_mode = 27;
     float gpus = 28;
     float idle_gpus = 29;
-    string vm_id = 30;
+    string render_node_id = 30;
 }
 
 message HostSearchCriteria {
@@ -280,7 +280,7 @@ message HostSearchCriteria {
     repeated string regex = 2;
     repeated string substr = 3;
     repeated string ids = 4;
-    repeated string vmIds = 7;
+    repeated string renderNodeIds = 7;
     repeated string allocs = 5;
     HardwareStateSeq states = 6;
 }
@@ -500,16 +500,16 @@ message HostGetHostRequest {
     string id = 1;
 }
 
-// GetHostByVmId
-message HostGetHostByVmIdRequest {
-    string vm_id = 1;
+// GetHostByRenderNodeId
+message HostGetHostByRenderNodeIdRequest {
+    string render_node_id = 1;
 }
 
 message HostGetHostResponse {
     Host host = 1;
 }
 
-message HostGetHostByVmIdResponse {
+message HostGetHostByRenderNodeIdResponse {
     Host host = 1;
 }
 

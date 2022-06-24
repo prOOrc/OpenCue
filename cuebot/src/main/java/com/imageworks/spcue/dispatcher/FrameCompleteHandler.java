@@ -327,7 +327,7 @@ public class FrameCompleteHandler {
                     frame.getLayerId(),
                     frame.getJobId(),
                     host.getId(),
-                    host.vmId,
+                    host.renderNodeId,
                     frameDetail.dateStopped.getTime()));
             if (job.state == JobState.FINISHED) {
                 eventManager.send("job.finished", new JobFinishedEvent(job.getId()));
@@ -340,7 +340,7 @@ public class FrameCompleteHandler {
                     unbookProc = true;
                 }
             }
-            else if (host.vmId != null) {
+            else if (host.renderNodeId != null) {
                 logger.info("the proc " + proc
                             + " is on virtual machive.");
                 unbookProc = true;
@@ -519,7 +519,7 @@ public class FrameCompleteHandler {
                     // TODO Temp workaround for Yandex.Cloud render farm
                     // Don't dispatch next frame on frame complete report
                     // because vm will be restarted
-                    if (host.vmId == null) {
+                    if (host.renderNodeId == null) {
                         dispatchQueue.execute(new DispatchNextFrame(job, proc,
                                 dispatcher));
                     }

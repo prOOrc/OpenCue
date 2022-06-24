@@ -214,7 +214,7 @@ public class HostReportHandler {
                 "host.reported",
                 new HostReportedEvent(
                     host.getHostId(),
-                    host.vmId,
+                    host.renderNodeId,
                     isBoot,
                     report.getFramesList()));
 

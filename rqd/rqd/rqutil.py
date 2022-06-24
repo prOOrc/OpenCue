@@ -177,7 +177,7 @@ def getHostname():
 @Memoize
 def getVmInfo():
     """Returns cloud virtual machine info"""
-    vm_id = None
+    render_node_id = None
     vm_name = None
     job_id = ""
     cores = None
@@ -196,12 +196,13 @@ def getVmInfo():
     if response.ok:
         try:
             data = response.json()
-            vm_id = data["id"]
             vm_name = data["name"]
             if "attributes" in data:
                 attributes = data.get("attributes") or {}
                 if "opencue-job-id" in attributes:
                     job_id = attributes["opencue-job-id"] or ""
+                if "render-node-id" in attributes:
+                    render_node_id = attributes["render-node-id"] or ""
                 if "cores" in attributes:
                     try:
                         cores = int(attributes["cores"])
@@ -227,7 +228,7 @@ def getVmInfo():
         else:
             return {
                 "JOB_ID": job_id,
-                "VM_ID": vm_id,
+                "RENDER_NODE_ID": render_node_id,
                 "VM_NAME": vm_name,
                 "CORES": cores,
                 "HYPERTHREADING_MULTIPLIER": hyperthreading_multiplier,

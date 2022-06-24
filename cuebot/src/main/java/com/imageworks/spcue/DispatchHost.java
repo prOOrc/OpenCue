@@ -46,7 +46,7 @@ public class DispatchHost extends Entity
     public long gpuMemory;
     public long idleGpuMemory;
     public String tags;
-    public String vmId;
+    public String renderNodeId;
     public String os;
 
     public boolean isNimby;
@@ -69,8 +69,8 @@ public class DispatchHost extends Entity
         return id;
     }
 
-    public String getVmId() {
-        return vmId;
+    public String getRenderNodeId() {
+        return renderNodeId;
     }
 
     public String getAllocationId() {

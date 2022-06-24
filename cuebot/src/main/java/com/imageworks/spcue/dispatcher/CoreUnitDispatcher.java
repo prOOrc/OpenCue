@@ -393,7 +393,7 @@ public class CoreUnitDispatcher implements Dispatcher {
                 frame.getLayerId(),
                 frame.getJobId(),
                 proc.getHostId(),
-                proc.getVmId(),
+                proc.getRenderNodeId(),
                 frameDetail.dateStarted.getTime()));
     }
 

@@ -80,7 +80,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             host.dateBooted = rs.getDate("ts_booted");
             host.dateCreated = rs.getDate("ts_created");
             host.datePinged = rs.getDate("ts_ping");
-            host.vmId = rs.getString("str_vm_id");
+            host.renderNodeId = rs.getString("str_render_node_id");
             return host;
         }
     };
@@ -89,7 +89,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
         public HostInterface mapRow(final ResultSet rs, int rowNum) throws SQLException {
             return new HostInterface() {
                 final String id = rs.getString("pk_host");
-                final String vmId = rs.getString("str_vm_id");
+                final String renderNodeId = rs.getString("str_render_node_id");
                 final String allocid =  rs.getString("pk_alloc");
                 final String name = rs.getString("str_name");
                 final String facility =  rs.getString("pk_facility");
@@ -97,7 +97,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
                 public String getHostId() { return id; }
                 public String getAllocationId() { return allocid; }
                 public String getId() { return id; }
-                public String getVmId() { return vmId; }
+                public String getRenderNodeId() { return renderNodeId; }
                 public String getName() { return name; }
                 public String getFacilityId() { return facility; };
             };
@@ -121,7 +121,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             "host.int_gpu_mem_idle,"+
             "host.ts_created,"+
             "host.str_name, " +
-            "host.str_vm_id, " +
+            "host.str_render_node_id, " +
             "host_stat.str_state,"+
             "host_stat.ts_ping,"+
             "host_stat.ts_booted, "+
@@ -171,7 +171,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             "host.pk_host, " +
             "host.pk_alloc,"+
             "host.str_name, " +
-            "host.str_vm_id, " +
+            "host.str_render_node_id, " +
             "alloc.pk_facility " +
         "FROM " +
             "host," +
@@ -219,7 +219,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             host.isNimby = rs.getBoolean("b_nimby");
             host.threadMode = rs.getInt("int_thread_mode");
             host.tags = rs.getString("str_tags");
-            host.vmId = rs.getString("str_vm_id");
+            host.renderNodeId = rs.getString("str_render_node_id");
             host.os = rs.getString("str_os");
             host.hardwareState =
                 HardwareState.valueOf(rs.getString("str_state"));
@@ -244,7 +244,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             "host.b_nimby, "+
             "host.int_thread_mode, "+
             "host.str_tags, " +
-            "host.str_vm_id, " +
+            "host.str_render_node_id, " +
             "host_stat.str_os, " +
             "host_stat.str_state, " +
             "alloc.pk_facility " +
@@ -296,7 +296,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             "int_gpu_mem,"+
             "int_gpu_mem_idle,"+
             "str_fqdn, " +
-            "str_vm_id, " +
+            "str_render_node_id, " +
             "int_thread_mode "+
         ") " +
         "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -357,7 +357,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             fqdn = host.getName();
             name = getHostNameFromFQDN(name, useLongNames);
         }
-        String vmId = host.getAttributesOrDefault("VM_ID", null);
+        String renderNodeId = host.getAttributesOrDefault("RENDER_NODE_ID", null);
         String hid = SqlUtil.genKeyRandom();
         int coreUnits = host.getNumProcs() * host.getCoresPerProc();
         String os = host.getAttributesMap().get("SP_OS");
@@ -371,7 +371,7 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
                 memUnits, memUnits,
                 host.getNumGpus(), host.getNumGpus(),
                 host.getTotalGpuMem(), host.getTotalGpuMem(),
-                fqdn, vmId, threadMode.getNumber());
+                fqdn, renderNodeId, threadMode.getNumber());
 
         getJdbcTemplate().update(INSERT_HOST_DETAIL[1],
                 hid, hid, host.getTotalMem(), host.getFreeMem(),

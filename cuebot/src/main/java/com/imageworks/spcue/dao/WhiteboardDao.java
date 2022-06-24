@@ -151,10 +151,10 @@ public interface WhiteboardDao {
     /**
      * returns the host a proc is part of
      *
-     * @param vmId String
+     * @param renderNodeId String
      * @return Host
      */
-    Host getHostByVmId(String vmId);
+    Host getHostByRenderNodeId(String renderNodeId);
 
     /**
      * returns the host by name
