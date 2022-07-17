@@ -40,6 +40,7 @@
         /WEB-INF/applicationContext-ice.xml
         /WEB-INF/applicationContext-jms.xml
         /WEB-INF/applicationContext-rabbit.xml
+		/WEB-INF/applicationContext-kafka.xml
 		</param-value>
 	</context-param>
 

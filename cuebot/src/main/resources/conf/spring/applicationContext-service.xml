@@ -248,7 +248,7 @@
     <property name="redirectManager" ref="redirectManager" />
     <property name="emailSupport" ref="emailSupport"/>
     <property name="frameSearchFactory" ref="frameSearchFactory" />
-    <property name="eventManager" ref="rabbitEventManager"/>
+    <property name="eventManager" ref="kafkaEventManager"/>
   </bean>
 
   <bean id="jobLauncher" class="com.imageworks.spcue.service.JobLauncher">
@@ -257,7 +257,7 @@
     <property name="adminManager" ref="adminManager"/>
     <property name="jobManager" ref="jobManager"/>
     <property name="emailSupport" ref="emailSupport"/>
-    <property name="eventManager" ref="rabbitEventManager"/>
+    <property name="eventManager" ref="kafkaEventManager"/>
     <property name="localBookingSupport" ref="localBookingSupport" />
   </bean>
 
@@ -331,7 +331,7 @@
     <property name="jobManager" ref="jobManager" />
     <property name="hostManager" ref="hostManager" />
     <property name="rqdClient" ref="rqdClient" />
-    <property name="eventManager" ref="rabbitEventManager" />
+    <property name="eventManager" ref="kafkaEventManager" />
   </bean>
 
   <bean id="localDispatcher" class="com.imageworks.spcue.dispatcher.LocalDispatcher">
@@ -370,7 +370,7 @@
     <property name="dispatcher" ref="dispatcher" />
     <property name="localDispatcher" ref="localDispatcher" />
     <property name="dispatchSupport" ref="dispatchSupport" />
-    <property name="eventManager" ref="rabbitEventManager"/>
+    <property name="eventManager" ref="kafkaEventManager"/>
   </bean>
 
   <bean id="hostReportHandler" class="com.imageworks.spcue.dispatcher.HostReportHandler" destroy-method="shutdown">
@@ -387,7 +387,7 @@
     <property name="jobDao" ref="jobDao" />
     <property name="layerDao" ref="layerDao" />
     <property name="killQueue" ref="killQueue"/>
-    <property name="eventManager" ref="rabbitEventManager"/>
+    <property name="eventManager" ref="kafkaEventManager"/>
   </bean>
 
   <!-- ##################################################################################### -->

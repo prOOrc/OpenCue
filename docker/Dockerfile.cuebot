@@ -82,6 +82,8 @@ ARG CUEBOT_GRPC_CUE_PORT=8443
 ARG CUEBOT_GRPC_RQD_PORT=8444
 ARG CUEBOT_GRPC_DEBUG_PORT=8450
 
+COPY ./docker/etc/client.truststore.jks /etc/security/ssl
+
 WORKDIR /opt/opencue
 
 COPY --from=build /home/gradle/cuebot/build/libs/cuebot-*-all.jar ./

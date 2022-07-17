@@ -23,9 +23,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.core.task.TaskRejectedException;
@@ -33,6 +35,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.imageworks.spcue.DispatchHost;
+import com.imageworks.spcue.FrameDetail;
 import com.imageworks.spcue.FrameInterface;
 import com.imageworks.spcue.JobEntity;
 import com.imageworks.spcue.LayerEntity;
@@ -47,6 +50,7 @@ import com.imageworks.spcue.dispatcher.commands.DispatchBookHostLocal;
 import com.imageworks.spcue.dispatcher.commands.DispatchHandleHostReport;
 import com.imageworks.spcue.dispatcher.commands.DispatchRqdKillFrame;
 import com.imageworks.spcue.events.HostReportedEvent;
+import com.imageworks.spcue.events.RunningFrame;
 import com.imageworks.spcue.grpc.host.HardwareState;
 import com.imageworks.spcue.grpc.host.LockState;
 import com.imageworks.spcue.grpc.report.BootReport;
@@ -195,7 +199,24 @@ public class HostReportHandler {
              * Updates memory usage for the proc, frames,
              * jobs, and layers. And LLU time for the frames.
              */
-            updateMemoryUsageAndLluTime(report.getFramesList());
+            List<RunningFrameInfo> rFrames = report.getFramesList();
+            List<RunningFrame> runningFrames = new LinkedList<RunningFrame>();
+
+            for (RunningFrameInfo rf: rFrames) {
+
+                FrameDetail frame = jobManager.getFrameDetail(rf.getFrameId());
+                runningFrames.add(new RunningFrame(rf.getFrameId(), frame.number, rf.getLayerId(), rf.getJobId(), rf.getStartTime()));
+
+                dispatchSupport.updateFrameMemoryUsageAndLluTime(frame,
+                        rf.getRss(), rf.getMaxRss(), rf.getLluTime());
+    
+                dispatchSupport.updateProcMemoryUsage(frame,
+                        rf.getRss(), rf.getMaxRss(), rf.getVsize(), rf.getMaxVsize(),
+                        rf.getUsedGpuMemory(), rf.getMaxUsedGpuMemory());
+            }
+
+            updateJobMemoryUsage(rFrames);
+            updateLayerMemoryUsage(rFrames);
 
             /*
              * kill frames that have over run.
@@ -216,7 +237,7 @@ public class HostReportHandler {
                     host.getHostId(),
                     host.renderNodeId,
                     isBoot,
-                    report.getFramesList()));
+                    runningFrames));
 
             /*
              * The checks are done in order of least CPU intensive to
@@ -552,29 +573,6 @@ public class HostReportHandler {
                 }
             }
         }
-    }
-
-    /**
-     *  Update memory usage and LLU time for the given list of frames.
-     *
-     * @param rFrames
-     */
-    private void updateMemoryUsageAndLluTime(List<RunningFrameInfo> rFrames) {
-
-        for (RunningFrameInfo rf: rFrames) {
-
-            FrameInterface frame = jobManager.getFrame(rf.getFrameId());
-
-            dispatchSupport.updateFrameMemoryUsageAndLluTime(frame,
-                    rf.getRss(), rf.getMaxRss(), rf.getLluTime());
-
-            dispatchSupport.updateProcMemoryUsage(frame,
-                    rf.getRss(), rf.getMaxRss(), rf.getVsize(), rf.getMaxVsize(),
-                    rf.getUsedGpuMemory(), rf.getMaxUsedGpuMemory());
-        }
-
-        updateJobMemoryUsage(rFrames);
-        updateLayerMemoryUsage(rFrames);
     }
 
     /**

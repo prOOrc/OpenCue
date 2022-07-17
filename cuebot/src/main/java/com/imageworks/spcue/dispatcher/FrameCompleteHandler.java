@@ -324,6 +324,8 @@ public class FrameCompleteHandler {
                 "frame.completed",
                 new FrameCompletedEvent(
                     frame.getId(),
+                    frameDetail.number,
+                    frameDetail.state.toString(),
                     frame.getLayerId(),
                     frame.getJobId(),
                     host.getId(),

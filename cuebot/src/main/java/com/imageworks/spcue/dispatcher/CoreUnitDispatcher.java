@@ -390,6 +390,7 @@ public class CoreUnitDispatcher implements Dispatcher {
             "frame.started",
             new FrameStartedEvent(
                 frame.getId(),
+                frameDetail.number,
                 frame.getLayerId(),
                 frame.getJobId(),
                 proc.getHostId(),

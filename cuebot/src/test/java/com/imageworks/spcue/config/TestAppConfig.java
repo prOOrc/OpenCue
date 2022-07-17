@@ -19,9 +19,15 @@
 
 package com.imageworks.spcue.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.sql.DataSource;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +35,9 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 
 @Configuration
 @ImportResource({"classpath:conf/spring/applicationContext-assumptions.xml",
@@ -38,6 +47,7 @@ import org.springframework.context.annotation.PropertySource;
                  "classpath:conf/spring/applicationContext-service.xml",
                  "classpath:conf/spring/applicationContext-jms.xml",
                  "classpath:conf/spring/applicationContext-rabbit.xml",
+                 "classpath:conf/spring/applicationContext-kafka.xml",
                  "classpath:conf/spring/applicationContext-criteria.xml"})
 @EnableConfigurationProperties
 @PropertySource({"classpath:opencue.properties"})
@@ -50,6 +60,28 @@ public class TestAppConfig {
         "classpath:conf/spring/applicationContext-dao-postgres.xml"
     })
     static class PostgresEngineConfig {}
+
+    @Value("${kafka.brokers}")
+    private String bootstrapServers;
+
+    @Bean
+    public Map<String, Object> producerConfigs() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        return props;
+    }
+
+    @Bean
+    public ProducerFactory<String, String> producerFactory() {
+        return new DefaultKafkaProducerFactory<>(producerConfigs());
+    }
+
+    @Bean
+    public KafkaTemplate<String, String> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
+    }
 }
 
 

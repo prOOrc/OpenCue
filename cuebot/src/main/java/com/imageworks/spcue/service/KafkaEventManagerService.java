@@ -17,18 +17,24 @@
 
 
 
-package com.imageworks.spcue;
+package com.imageworks.spcue.service;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
+public class KafkaEventManagerService implements EventManager {
 
-@SpringBootApplication(exclude = KafkaAutoConfiguration.class)
-public class CuebotApplication extends SpringApplication {
+    private KafkaMover kafkaMover;
 
-    public static void main(String[] args) {
-        // Cuebot startup
-        SpringApplication.run(CuebotApplication.class, args);
+    @Override
+    public void send(String topic, Object payload) {
+        this.kafkaMover.send(topic, payload);
     }
+
+    public KafkaMover getKafkaMover() {
+        return kafkaMover;
+    }
+
+    public void setKafkaMover(KafkaMover kafkaMover) {
+        this.kafkaMover = kafkaMover;
+    }
+
 }
 
