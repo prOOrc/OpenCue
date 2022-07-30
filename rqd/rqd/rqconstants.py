@@ -44,8 +44,19 @@ if 'CUEBOT_HOSTNAME' in os.environ:
 else:
     CUEBOT_HOSTNAME = 'localhost'
 
+if 'CUEBOT_GRPC_PORT' in os.environ:
+    try:
+        CUEBOT_GRPC_PORT = int(os.environ['CUEBOT_GRPC_PORT'])
+    except ValueError:
+        CUEBOT_GRPC_PORT = 8443
+else:
+    CUEBOT_GRPC_PORT = 8443
+
 RQD_TIMEOUT = 10000
-DEFAULT_FACILITY = 'cloud'
+if 'DEFAULT_FACILITY' in os.environ:
+    DEFAULT_FACILITY = os.environ['DEFAULT_FACILITY']
+else:
+    DEFAULT_FACILITY = 'cloud'
 
 # GRPC VALUES
 RQD_GRPC_MAX_WORKERS = 10
@@ -53,7 +64,6 @@ RQD_GRPC_PORT = 8444
 RQD_GRPC_SLEEP_SEC = 60 * 60 * 24
 RQD_GRPC_CONNECTION_ATTEMPT_SLEEP_SEC = 15
 RQD_GRPC_RETRY_CONNECTION = True
-CUEBOT_GRPC_PORT = 8443
 
 # RQD behavior:
 RSS_UPDATE_INTERVAL = 10

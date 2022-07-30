@@ -32,8 +32,6 @@ import subprocess
 import threading
 import uuid
 
-import requests
-
 import rqd.rqconstants
 
 if platform.system() != 'Windows':
@@ -177,64 +175,14 @@ def getHostname():
 @Memoize
 def getVmInfo():
     """Returns cloud virtual machine info"""
-    render_node_id = None
-    vm_name = None
-    job_id = ""
-    cores = None
-    memory = None
-    gpus = None
-    hyperthreading_multiplier = None
-    try:
-        response = requests.get(
-            "http://169.254.169.254/computeMetadata/v1/instance/?recursive=true",
-            headers={
-                "Metadata-Flavor": "Google"
-            }
-        )
-    except requests.RequestException:
-        return None
-    if response.ok:
-        try:
-            data = response.json()
-            vm_name = data["name"]
-            if "attributes" in data:
-                attributes = data.get("attributes") or {}
-                if "opencue-job-id" in attributes:
-                    job_id = attributes["opencue-job-id"] or ""
-                if "render-node-id" in attributes:
-                    render_node_id = attributes["render-node-id"] or ""
-                if "cores" in attributes:
-                    try:
-                        cores = int(attributes["cores"])
-                    except ValueError:
-                        pass
-                if "hyperthreading-multiplier" in attributes:
-                    try:
-                        hyperthreading_multiplier = int(attributes["hyperthreading-multiplier"])
-                    except ValueError:
-                        pass
-                if "memory" in attributes:
-                    try:
-                        memory = int(attributes["memory"])
-                    except ValueError:
-                        pass
-                if "gpus" in attributes:
-                    try:
-                        gpus = int(attributes["gpus"])
-                    except ValueError:
-                        pass
-        except Exception:
-            pass
-        else:
-            return {
-                "JOB_ID": job_id,
-                "RENDER_NODE_ID": render_node_id,
-                "VM_NAME": vm_name,
-                "CORES": cores,
-                "HYPERTHREADING_MULTIPLIER": hyperthreading_multiplier,
-                "MEMORY": memory,
-                "GPUS": gpus,
-            }
+    return {
+        "JOB_ID": os.getenv("OPENCUE_JOB_ID") or "",
+        "RENDER_NODE_ID": os.getenv("RENDER_NODE_ID"),
+        "CORES": os.getenv("CORES"),
+        "HYPERTHREADING_MULTIPLIER": os.getenv("HYPERTHREADING_MULTIPLIER"),
+        "MEMORY": os.getenv("MEMORY"),
+        "GPUS": os.getenv("GPUS"),
+    }
 
 
 if __name__ == "__main__":
