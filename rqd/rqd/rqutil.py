@@ -175,14 +175,17 @@ def getHostname():
 @Memoize
 def getVmInfo():
     """Returns cloud virtual machine info"""
-    return {
-        "JOB_ID": os.getenv("OPENCUE_JOB_ID") or "",
-        "RENDER_NODE_ID": os.getenv("RENDER_NODE_ID"),
-        "CORES": os.getenv("CORES"),
-        "HYPERTHREADING_MULTIPLIER": os.getenv("HYPERTHREADING_MULTIPLIER"),
-        "MEMORY": os.getenv("MEMORY"),
-        "GPUS": os.getenv("GPUS"),
-    }
+    try:
+        return {
+            "JOB_ID": os.getenv("OPENCUE_JOB_ID") or "",
+            "RENDER_NODE_ID": os.getenv("RENDER_NODE_ID"),
+            "CORES": int(os.getenv("CORES")),
+            "HYPERTHREADING_MULTIPLIER": int(os.getenv("HYPERTHREADING_MULTIPLIER")),
+            "MEMORY": int(os.getenv("MEMORY")),
+            "GPUS": int(os.getenv("GPUS")),
+        }
+    except ValueError:
+        pass
 
 
 if __name__ == "__main__":
