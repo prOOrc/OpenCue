@@ -571,7 +571,7 @@ class Machine(object):
             __totalCores = rqd.rqconstants.OVERRIDE_CORES * rqd.rqconstants.CORE_VALUE
         elif self.__vmInfo is not None:
             if self.__vmInfo["CORES"] is not None:
-                __totalCores = self.__vmInfo["CORES"]
+                __totalCores = self.__vmInfo["CORES"] * rqd.rqconstants.CORE_VALUE
             if self.__vmInfo["HYPERTHREADING_MULTIPLIER"] is not None:
                 hyperthreadingMultiplier = self.__vmInfo["HYPERTHREADING_MULTIPLIER"]
 

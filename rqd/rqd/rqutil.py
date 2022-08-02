@@ -179,10 +179,10 @@ def getVmInfo():
         return {
             "JOB_ID": os.getenv("OPENCUE_JOB_ID") or "",
             "RENDER_NODE_ID": os.getenv("RENDER_NODE_ID"),
-            "CORES": int(os.getenv("CORES")),
-            "HYPERTHREADING_MULTIPLIER": int(os.getenv("HYPERTHREADING_MULTIPLIER")),
-            "MEMORY": int(os.getenv("MEMORY")),
-            "GPUS": int(os.getenv("GPUS")),
+            "CORES": int(os.getenv("CORES") or 0) or None,
+            "HYPERTHREADING_MULTIPLIER": int(os.getenv("HYPERTHREADING_MULTIPLIER") or 0) or None,
+            "MEMORY": int(os.getenv("MEMORY") or 0) or None,
+            "GPUS": int(os.getenv("GPUS") or 0) or None,
         }
     except ValueError:
         pass
