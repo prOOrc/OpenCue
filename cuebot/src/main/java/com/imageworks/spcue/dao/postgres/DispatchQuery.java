@@ -534,6 +534,8 @@ public class DispatchQuery {
                 "WHERE " +
                     "l.pk_job= ? " +
                 "AND " +
+                    "(h.pk_frame IS NULL OR h.pk_frame = frame.pk_frame) " +
+                "AND " +
                     "sum_running.int_sum_running < limit_record.int_max_value " +
                     "OR sum_running.int_sum_running IS NULL " +
             ") " +
@@ -651,6 +653,8 @@ public class DispatchQuery {
                     "ON limit_record.pk_limit_record = sum_running.pk_limit_record " +
                     "WHERE " +
                         "l.pk_job = ? " +
+                    "AND " +
+                        "(h.pk_frame IS NULL OR h.pk_frame = frame.pk_frame) " +
                     "AND " +
                         "sum_running.int_sum_running < limit_record.int_max_value " +
                         "OR sum_running.int_sum_running IS NULL " +
@@ -986,6 +990,8 @@ public class DispatchQuery {
                 "WHERE " +
                     "l.pk_layer= ? " +
                 "AND " +
+                    "(h.pk_frame IS NULL OR h.pk_frame = frame.pk_frame) " +
+                "AND " +
                     "sum_running.int_sum_running < limit_record.int_max_value " +
                     "OR sum_running.int_sum_running IS NULL " +
             ")" +
@@ -1103,6 +1109,8 @@ public class DispatchQuery {
                     "ON limit_record.pk_limit_record = sum_running.pk_limit_record " +
                     "WHERE " +
                         "l.pk_layer= ? " +
+                    "AND " +
+                        "(h.pk_frame IS NULL OR h.pk_frame = frame.pk_frame) " +
                     "AND " +
                         "sum_running.int_sum_running < limit_record.int_max_value " +
                         "OR sum_running.int_sum_running IS NULL " +

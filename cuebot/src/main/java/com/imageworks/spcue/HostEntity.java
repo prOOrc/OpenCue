@@ -30,6 +30,7 @@ public class HostEntity extends Entity implements HostInterface {
     public String facilityId;
     public String allocId;
     public String renderNodeId;
+    public String frameId;
     public HardwareState state;
     public LockState lockState;
     public boolean nimbyEnabled;
@@ -56,6 +57,7 @@ public class HostEntity extends Entity implements HostInterface {
         this.id = grpcHost.getId();
         this.allocId = grpcHost.getAllocName();
         this.renderNodeId = grpcHost.getRenderNodeId();
+        this.frameId = grpcHost.getFrameId();
         this.state = grpcHost.getState();
         this.lockState = grpcHost.getLockState();
         this.nimbyEnabled = grpcHost.getNimbyEnabled();
@@ -75,6 +77,10 @@ public class HostEntity extends Entity implements HostInterface {
 
     public String getRenderNodeId() {
         return renderNodeId;
+    }
+
+    public String getFrameId() {
+        return frameId;
     }
 
     public String getAllocationId() {

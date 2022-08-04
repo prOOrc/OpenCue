@@ -1103,6 +1103,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
         builder.setThreadMode(ThreadMode.values()[rs.getInt("int_thread_mode")]);
         builder.setOs(SqlUtil.getString(rs,"str_os"));
         builder.setRenderNodeId(SqlUtil.getString(rs,"str_render_node_id"));
+        builder.setFrameId(SqlUtil.getString(rs,"pk_frame"));
 
         String tags =  SqlUtil.getString(rs,"str_tags");
         if (tags != null)
@@ -2189,6 +2190,7 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
             "host.b_comment,"+
             "host.int_thread_mode,"+
             "host.str_render_node_id,"+
+            "host.pk_frame,"+
             "host_stat.str_os,"+
             "host_stat.int_mem_total,"+
             "host_stat.int_mem_free,"+
