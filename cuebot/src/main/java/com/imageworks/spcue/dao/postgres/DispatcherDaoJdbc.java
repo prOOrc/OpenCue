@@ -306,7 +306,7 @@ public class DispatcherDaoJdbc extends JdbcDaoSupport implements DispatcherDao {
                 threadMode(host.threadMode),
                 host.idleGpus,
                 (host.idleGpuMemory > 0) ? 1 : 0, host.idleGpuMemory,
-                job.getJobId(), host.getName(),
+                job.getJobId(), host.getFrameId(), host.getFrameId(), host.getName(),
                 job.getJobId(), limit);
         }
     }
@@ -352,8 +352,9 @@ public class DispatcherDaoJdbc extends JdbcDaoSupport implements DispatcherDao {
                 FrameDaoJdbc.DISPATCH_FRAME_MAPPER,
                 host.idleCores, host.idleMemory,
                 threadMode(host.threadMode),
-                host.idleGpus, host.idleGpuMemory, layer.getLayerId(), layer.getLayerId(),
-                host.getName(), limit);
+                host.idleGpus, host.idleGpuMemory, layer.getLayerId(),
+                host.getFrameId(), host.getFrameId(), host.getName(),
+                layer.getLayerId(), limit);
         }
     }
 
