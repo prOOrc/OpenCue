@@ -499,8 +499,10 @@ class Machine(object):
         self.__renderHost.facility = rqd.rqconstants.DEFAULT_FACILITY
         self.__renderHost.attributes['SP_OS'] = rqd.rqconstants.SP_OS
         if self.__vmInfo:
-            self.__renderHost.attributes['FRAME_ID'] = self.__vmInfo["FRAME_ID"]
-            self.__renderHost.attributes['RENDER_NODE_ID'] = self.__vmInfo["RENDER_NODE_ID"]
+            if self.__vmInfo["FRAME_ID"]:
+                self.__renderHost.attributes['FRAME_ID'] = self.__vmInfo["FRAME_ID"]
+            if self.__vmInfo["RENDER_NODE_ID"]:
+                self.__renderHost.attributes['RENDER_NODE_ID'] = self.__vmInfo["RENDER_NODE_ID"]
 
         self.updateMachineStats()
 

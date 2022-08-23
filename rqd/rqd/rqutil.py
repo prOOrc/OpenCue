@@ -177,8 +177,8 @@ def getVmInfo():
     """Returns cloud virtual machine info"""
     try:
         return {
-            "JOB_ID": os.getenv("OPENCUE_JOB_ID") or "",
-            "FRAME_ID": os.getenv("OPENCUE_FRAME_ID") or "",
+            "JOB_ID": os.getenv("OPENCUE_JOB_ID"),
+            "FRAME_ID": os.getenv("OPENCUE_FRAME_ID"),
             "RENDER_NODE_ID": os.getenv("RENDER_NODE_ID"),
             "CORES": int(os.getenv("CORES") or 0) or None,
             "HYPERTHREADING_MULTIPLIER": int(os.getenv("HYPERTHREADING_MULTIPLIER") or 0) or None,

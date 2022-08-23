@@ -342,13 +342,13 @@ public class FrameCompleteHandler {
                     unbookProc = true;
                 }
             }
-            else if (host.renderNodeId != null) {
-                logger.info("the proc " + proc
-                            + " is on virtual machive.");
-                unbookProc = true;
-                hostManager.setHostLock(proc, LockState.LOCKED,
-                    new Source("FRAME_COMPLETED"));
-            }
+            // else if (host.renderNodeId != null) {
+            //     logger.info("the proc " + proc
+            //                 + " is on virtual machive.");
+            //     unbookProc = true;
+            //     hostManager.setHostLock(proc, LockState.LOCKED,
+            //         new Source("FRAME_COMPLETED"));
+            // }
 
             /*
              * An exit status of NO_RETRY (256) indicates that the frame could
@@ -521,10 +521,12 @@ public class FrameCompleteHandler {
                     // TODO Temp workaround for Yandex.Cloud render farm
                     // Don't dispatch next frame on frame complete report
                     // because vm will be restarted
-                    if (host.renderNodeId == null) {
-                        dispatchQueue.execute(new DispatchNextFrame(job, proc,
-                                dispatcher));
-                    }
+                    // if (host.renderNodeId == null) {
+                    //     dispatchQueue.execute(new DispatchNextFrame(job, proc,
+                    //             dispatcher));
+                    // }
+                    dispatchQueue.execute(new DispatchNextFrame(job, proc,
+                        dispatcher));
                 }
             } else {
                 dispatchSupport.unbookProc(proc, "frame state was "

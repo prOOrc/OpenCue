@@ -366,7 +366,13 @@ public class HostDaoJdbc extends JdbcDaoSupport implements HostDao {
             name = getHostNameFromFQDN(name, useLongNames);
         }
         String renderNodeId = host.getAttributesOrDefault("RENDER_NODE_ID", null);
+        if (renderNodeId != null && renderNodeId.equals("")) {
+            renderNodeId = null;
+        }
         String frameId = host.getAttributesOrDefault("FRAME_ID", null);
+        if (frameId != null && frameId.equals("")) {
+            frameId = null;
+        }
         String hid = SqlUtil.genKeyRandom();
         int coreUnits = host.getNumProcs() * host.getCoresPerProc();
         String os = host.getAttributesMap().get("SP_OS");
