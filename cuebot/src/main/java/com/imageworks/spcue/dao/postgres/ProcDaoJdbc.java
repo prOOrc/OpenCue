@@ -295,6 +295,7 @@ public class ProcDaoJdbc extends JdbcDaoSupport implements ProcDao {
                 proc.unbooked = rs.getBoolean("b_unbooked");
                 proc.isLocalDispatch = rs.getBoolean("b_local");
                 proc.os = rs.getString("str_os");
+                proc.renderNodeId = rs.getString("str_render_node_id");
                 return proc;
             }
     };
@@ -322,6 +323,7 @@ public class ProcDaoJdbc extends JdbcDaoSupport implements ProcDao {
             "proc.int_virt_max_used,"+
             "proc.int_virt_used,"+
             "host.str_name AS host_name, " +
+            "host.str_render_node_id, " +
             "host_stat.str_os " +
         "FROM " +
             "proc," +
@@ -351,6 +353,7 @@ public class ProcDaoJdbc extends JdbcDaoSupport implements ProcDao {
           "SELECT " +
               "proc.*, " +
               "host.str_name AS host_name, " +
+              "host.str_render_node_id, " +
               "host.pk_alloc, " +
               "host_stat.str_os, " +
               "alloc.pk_facility " +
@@ -493,6 +496,7 @@ public class ProcDaoJdbc extends JdbcDaoSupport implements ProcDao {
           "SELECT " +
               "proc.*, " +
               "host.str_name AS host_name, " +
+              "host.str_render_node_id, " +
               "host_stat.str_os, " +
               "host.pk_alloc, " +
               "alloc.pk_facility " +
@@ -571,6 +575,7 @@ public class ProcDaoJdbc extends JdbcDaoSupport implements ProcDao {
               "int_virt_max_used,"+
               "int_virt_used,"+
               "host_name, " +
+              "str_render_node_id, " +
               "str_os " +
           "FROM ("
               + GET_VIRTUAL_PROC + " " +
