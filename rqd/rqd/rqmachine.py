@@ -485,7 +485,8 @@ class Machine(object):
             self.__renderHost.tags.append("64bit")
         self.__renderHost.tags.append(os.uname()[2].replace(".EL.spi", "").replace("smp", ""))
         if self.__vmInfo:
-            self.__renderHost.tags.append(self.__vmInfo["JOB_ID"].replace("-", ""))
+            if self.__vmInfo["JOB_ID"]:
+                self.__renderHost.tags.append(self.__vmInfo["JOB_ID"].replace("-", ""))
 
     def testInitMachineStats(self, pathCpuInfo):
         """Initializes machine stats outside of normal startup process. Used for testing."""
