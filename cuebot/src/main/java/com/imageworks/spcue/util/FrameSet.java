@@ -90,6 +90,10 @@ public class FrameSet {
         return framesToFrameRanges(frameList.subList(startFrameIndex, endFrameIndex+1));
     }
 
+    public FrameSet getChunkFrameSet(int startFrameIndex, int chunkSize) {
+        return new FrameSet(getChunk(startFrameIndex, chunkSize));
+    }
+
     /**
      * Return a string representation of a subset of a frame range.
      *
