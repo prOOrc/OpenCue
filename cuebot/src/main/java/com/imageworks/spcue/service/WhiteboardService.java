@@ -163,6 +163,10 @@ public class WhiteboardService implements Whiteboard {
         return whiteboardDao.getFrames(r);
     }
 
+    public FrameSeq getFramesByIds(List<String> ids) {
+        return whiteboardDao.getFramesByIds(ids);
+    }
+
     public FrameSeq getFramesByLayerIds(List<String> layerIds) {
         return whiteboardDao.getFramesByLayerIds(layerIds);
     }

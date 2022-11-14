@@ -155,7 +155,10 @@ if 'OVERRIDE_MEMORY' in os.environ:
         pass
 OVERRIDE_NIMBY = None # True to turn on, False to turn off
 OVERRIDE_HOSTNAME = None # Force to use this hostname
-ALLOW_GPU = False
+if 'ALLOW_GPU' in os.environ:
+    ALLOW_GPU = os.environ['ALLOW_GPU'].lower() == 'true'
+else:
+    ALLOW_GPU = False
 LOAD_MODIFIER = 0 # amount to add/subtract from load
 
 if subprocess.getoutput('/bin/su --help').find('session-command') != -1:

@@ -205,7 +205,19 @@ public class HostReportHandler {
             for (RunningFrameInfo rf: rFrames) {
 
                 FrameDetail frame = jobManager.getFrameDetail(rf.getFrameId());
-                runningFrames.add(new RunningFrame(rf.getFrameId(), frame.number, rf.getLayerId(), rf.getJobId(), rf.getStartTime()));
+                runningFrames.add(
+                    new RunningFrame(
+                        rf.getFrameId(),
+                        frame.number,
+                        rf.getLayerId(),
+                        rf.getJobId(),
+                        rf.getStartTime(),
+                        rf.getRss(),
+                        rf.getMaxRss(),
+                        rf.getVsize(),
+                        rf.getMaxVsize(),
+                        rf.getUsedGpuMemory(),
+                        rf.getMaxUsedGpuMemory()));
 
                 dispatchSupport.updateFrameMemoryUsageAndLluTime(frame,
                         rf.getRss(), rf.getMaxRss(), rf.getLluTime());

@@ -43,6 +43,9 @@ service FrameInterface {
 
     // Get a frame from search criteria
     rpc GetFrames(FrameGetFramesRequest) returns (FrameGetFramesResponse);
+    
+    // Get a frame by ids
+    rpc GetFramesByIds(FrameGetFramesByIdsRequest) returns (FrameGetFramesByIdsResponse);
 
     // Get a frame by layer ids
     rpc GetFramesByLayerIds(FrameGetFramesByLayerIdsRequest) returns (FrameGetFramesByLayerIdsResponse);
@@ -875,6 +878,15 @@ message FrameGetFramesRequest {
 }
 
 message FrameGetFramesResponse {
+    FrameSeq frames = 1;
+}
+
+// GetFramesByIds
+message FrameGetFramesByIdsRequest {
+    repeated string ids = 1;
+}
+
+message FrameGetFramesByIdsResponse {
     FrameSeq frames = 1;
 }
 

@@ -325,6 +325,7 @@ public class FrameCompleteHandler {
                 new FrameCompletedEvent(
                     frame.getId(),
                     frameDetail.number,
+                    frameDetail.retryCount,
                     frameDetail.state.toString(),
                     frame.getLayerId(),
                     frame.getJobId(),

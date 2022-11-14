@@ -55,6 +55,8 @@ import com.imageworks.spcue.grpc.job.FrameFindFrameRequest;
 import com.imageworks.spcue.grpc.job.FrameFindFrameResponse;
 import com.imageworks.spcue.grpc.job.FrameGetFrameRequest;
 import com.imageworks.spcue.grpc.job.FrameGetFrameResponse;
+import com.imageworks.spcue.grpc.job.FrameGetFramesByIdsRequest;
+import com.imageworks.spcue.grpc.job.FrameGetFramesByIdsResponse;
 import com.imageworks.spcue.grpc.job.FrameGetFramesByLayerIdsRequest;
 import com.imageworks.spcue.grpc.job.FrameGetFramesByLayerIdsResponse;
 import com.imageworks.spcue.grpc.job.FrameGetFramesRequest;
@@ -134,6 +136,22 @@ public class ManageFrame extends FrameInterfaceGrpc.FrameInterfaceImplBase {
                                         request.getR())))
                 .build());
         responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getFramesByIds(FrameGetFramesByIdsRequest request, StreamObserver<FrameGetFramesByIdsResponse> responseObserver) {
+        try {
+            FrameSeq frameSeq = whiteboard.getFramesByIds(request.getIdsList());
+            responseObserver.onNext(FrameGetFramesByIdsResponse.newBuilder()
+                    .setFrames(frameSeq)
+                    .build());
+            responseObserver.onCompleted();
+        } catch (EmptyResultDataAccessException e) {
+            responseObserver.onError(Status.NOT_FOUND
+                    .withDescription(e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException());
+        }
     }
 
     @Override

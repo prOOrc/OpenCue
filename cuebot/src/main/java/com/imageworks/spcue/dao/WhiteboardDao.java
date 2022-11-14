@@ -276,6 +276,14 @@ public interface WhiteboardDao {
     FrameSeq getFrames(FrameSearchInterface r);
 
     /**
+     * Returns a list of frames for the specified ids.
+     *
+     * @param ids List<String>
+     * @return FrameSeq
+     */
+    FrameSeq getFramesByIds(List<String> ids);
+
+    /**
      * Returns a list of frames for the specified layer ids.
      *
      * @param ids List<String>

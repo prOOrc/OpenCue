@@ -450,6 +450,17 @@ public class WhiteboardDaoJdbc extends JdbcDaoSupport implements WhiteboardDao {
     }
 
     @Override
+    public FrameSeq getFramesByIds(List<String> ids) {
+        String query = GET_FRAMES_CRITERIA + 
+            "AND " + 
+            SqlUtil.buildBindVariableArray("frame.pk_frame", ids.size()) +
+            " ORDER BY frame.int_dispatch_order ASC, frame.int_number ASC";
+        List<Frame> frames = getJdbcTemplate().query(
+            query, FRAME_MAPPER, ids.toArray());
+        return FrameSeq.newBuilder().addAllFrames(frames).build();
+    }
+
+    @Override
     public FrameSeq getFramesByLayerIds(List<String> layersIds) {
         String query = GET_FRAMES_CRITERIA + 
             "AND " + 
